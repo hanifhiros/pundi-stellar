@@ -76,8 +76,8 @@ body {
 .pundi-card-premium {
   background: var(--bg-card);
   border: 1px solid var(--border-light);
-  border-radius: 24px;
-  padding: 32px;
+  border-radius: 32px;
+  padding: 48px;
   box-shadow: var(--shadow-card);
   transition: box-shadow 0.2s ease, border-color 0.2s ease;
 }
@@ -89,8 +89,8 @@ body {
 .pundi-card-gold-premium {
   background: linear-gradient(180deg, #FFFDF8 0%, #FEF9ED 100%);
   border: 1.5px solid var(--border-gold);
-  border-radius: 24px;
-  padding: 32px;
+  border-radius: 32px;
+  padding: 40px;
   box-shadow: var(--shadow-card);
 }
 
@@ -109,9 +109,9 @@ body {
 .nav-pill-track {
   display: inline-flex;
   align-items: center;
-  gap: 4px;
+  gap: 6px;
   background: #F1F4F1;
-  padding: 6px;
+  padding: 8px;
   border-radius: 9999px;
   border: 1px solid var(--border-light);
 }
@@ -119,10 +119,10 @@ body {
 .nav-pill-btn {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
-  padding: 10px 20px;
+  gap: 10px;
+  padding: 14px 28px;
   border-radius: 9999px;
-  font-size: 14px;
+  font-size: 15px;
   font-weight: 700;
   color: var(--text-muted);
   background: transparent;
@@ -139,7 +139,7 @@ body {
 .nav-pill-btn.active {
   background: #FFFFFF;
   color: #975A16;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
 }
 
 /* ── Wallet Buttons ── */
@@ -148,12 +148,12 @@ body {
   align-items: center;
   justify-content: center;
   gap: 8px;
-  min-height: 44px;
-  padding: 0 22px;
+  min-height: 48px;
+  padding: 0 28px;
   border-radius: 9999px;
   background: var(--gold-btn-grad);
   color: #FFFFFF;
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 800;
   border: none;
   cursor: pointer;
@@ -164,7 +164,7 @@ body {
 
 .btn-wallet-primary:hover {
   filter: brightness(1.05);
-  transform: translateY(-1px);
+  transform: translateY(-2px);
 }
 
 .btn-banner-primary {
@@ -172,12 +172,12 @@ body {
   align-items: center;
   justify-content: center;
   gap: 8px;
-  min-height: 42px;
-  padding: 0 20px;
-  border-radius: 12px;
+  min-height: 46px;
+  padding: 0 24px;
+  border-radius: 14px;
   background: #B7791F;
   color: #FFFFFF;
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 800;
   border: none;
   cursor: pointer;
@@ -194,24 +194,24 @@ body {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 10px;
+  gap: 12px;
   width: 100%;
-  height: 56px;
+  height: 64px;
   background: linear-gradient(135deg, #E6A217 0%, #C87D0E 100%);
   color: #FFFFFF !important;
-  font-size: 16px;
+  font-size: 18px;
   font-weight: 800;
-  border-radius: 16px;
+  border-radius: 20px;
   border: none;
   cursor: pointer;
-  box-shadow: 0 8px 20px rgba(214, 158, 46, 0.3);
+  box-shadow: 0 10px 25px rgba(214, 158, 46, 0.25);
   transition: all 0.2s ease;
-  letter-spacing: 0.01em;
+  letter-spacing: 0.02em;
 }
 
 .btn-gold-action:hover:not(:disabled) {
-  transform: translateY(-1px);
-  box-shadow: 0 12px 28px rgba(214, 158, 46, 0.4);
+  transform: translateY(-2px);
+  box-shadow: 0 16px 32px rgba(214, 158, 46, 0.35);
   filter: brightness(1.05);
 }
 
@@ -228,13 +228,13 @@ body {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 6px;
-  padding: 14px 10px;
-  border-radius: 16px;
+  gap: 10px;
+  padding: 20px 14px;
+  border-radius: 20px;
   border: 1.5px solid var(--border-light);
   background: #FFFFFF;
   cursor: pointer;
-  transition: all 0.18s ease;
+  transition: all 0.2s ease;
 }
 
 .country-chip:hover {
@@ -245,7 +245,7 @@ body {
 .country-chip.active {
   border-color: var(--gold-500);
   background: var(--gold-100);
-  box-shadow: 0 0 0 2px rgba(214, 158, 46, 0.2);
+  box-shadow: 0 0 0 3px rgba(214, 158, 46, 0.15);
 }
 
 /* ── Input Box ── */

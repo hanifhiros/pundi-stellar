@@ -69,67 +69,26 @@ export function InventoryApp() {
       {/* Global Feedback Banner */}
       {(error || message) && (
         <div
-          className={`p-4 rounded-2xl flex items-center justify-between gap-3 animate-in fade-in ${
+          className={`p-5 rounded-2xl flex items-center justify-between gap-3 animate-in fade-in shadow-sm ${
             error
               ? "bg-rose-50 border border-rose-200 text-rose-800"
               : "bg-emerald-50 border border-emerald-200 text-emerald-800"
           }`}
         >
-          <span className="text-sm font-bold">{error ?? message}</span>
+          <span className="text-base font-bold">{error ?? message}</span>
           <button
             type="button"
             onClick={clearFeedback}
-            className="p-1 hover:opacity-75 cursor-pointer"
+            className="p-1.5 hover:opacity-75 cursor-pointer"
             aria-label="Tutup"
           >
-            <X className="w-4 h-4" />
+            <X className="w-5 h-5" />
           </button>
         </div>
       )}
 
-      {/* Hero Stats (Visible when connected with data) */}
-      {connected && (remittances.length > 0 || Number(totalGoldMg) > 0) && (
-        <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
-          <div className="p-5 rounded-2xl bg-white border border-slate-200/90 shadow-card">
-            <p className="text-xs font-bold text-slate-400 uppercase tracking-wider">
-              Total Terkirim
-            </p>
-            <p className="text-xl sm:text-2xl font-black text-slate-900 mt-1.5 font-display truncate">
-              {formatIDR(totalSentIDR)}
-            </p>
-            <p className="text-xs text-slate-400 mt-0.5 font-medium">
-              {remittances.length}× kiriman selesai
-            </p>
-          </div>
-
-          <div className="p-5 rounded-2xl bg-gradient-to-br from-amber-50/90 to-amber-100/40 border border-amber-200/90 shadow-card">
-            <p className="text-xs font-bold text-amber-800 uppercase tracking-wider">
-              Saldo Emas Fisik
-            </p>
-            <p className="text-xl sm:text-2xl font-black text-amber-600 mt-1.5 font-display truncate">
-              {goldGrams >= 0.001 ? `${goldGrams.toFixed(3)} gram` : formatGold(totalGoldMg)}
-            </p>
-            <p className="text-xs text-amber-800/80 mt-0.5 font-bold">
-              ≈ {formatIDR(goldValueIDR)}
-            </p>
-          </div>
-
-          <div className="p-5 rounded-2xl bg-gradient-to-br from-emerald-50/90 to-emerald-100/40 border border-emerald-200/90 shadow-card col-span-2 sm:col-span-1">
-            <p className="text-xs font-bold text-emerald-800 uppercase tracking-wider">
-              Aturan Tabungan
-            </p>
-            <p className="text-base sm:text-lg font-black text-emerald-950 mt-1.5 font-display truncate">
-              {savingsRule ? `${savingsRule.savings_bps / 100}% (${savingsRule.label})` : "10% Default"}
-            </p>
-            <p className="text-xs text-emerald-700 font-bold mt-0.5 flex items-center gap-1">
-              <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" /> On-Chain Soroban
-            </p>
-          </div>
-        </div>
-      )}
-
       {/* Pill Navigation Bar */}
-      <div className="flex justify-center">
+      <div className="flex justify-center my-6">
         <div className="nav-pill-track overflow-x-auto max-w-full">
           {TABS.map((tab) => {
             const Icon = tab.icon;
@@ -141,7 +100,7 @@ export function InventoryApp() {
                 onClick={() => setActiveTab(tab.key)}
                 className={`nav-pill-btn font-display ${isActive ? "active" : ""}`}
               >
-                <Icon className={`w-4 h-4 ${isActive ? "text-amber-600" : "text-slate-400"}`} />
+                <Icon className={`w-5 h-5 ${isActive ? "text-amber-600" : "text-slate-400"}`} />
                 <span>{tab.label}</span>
               </button>
             );
@@ -153,23 +112,23 @@ export function InventoryApp() {
       <div className="pt-2">
         {/* TAB 1: KIRIM UANG */}
         {activeTab === "kirim" && (
-          <div className="max-w-2xl mx-auto space-y-8">
+          <div className="max-w-2xl mx-auto space-y-10">
             <SendRemittanceForm
               savingsRule={savingsRule}
               onSubmit={sendRemittance}
               loading={actionLoading}
             />
-            <div className="p-6 rounded-3xl bg-white border border-slate-200/60 shadow-sm space-y-3">
-              <h3 className="text-sm font-bold text-slate-900 font-display flex items-center gap-2">
+            <div className="p-8 rounded-[32px] bg-white border border-slate-200/60 shadow-sm space-y-4">
+              <h3 className="text-base font-bold text-slate-900 font-display flex items-center gap-2">
                 <span>💡</span> Keunggulan Pundi
               </h3>
-              <p className="text-sm text-slate-600 leading-relaxed font-medium">
+              <p className="text-base text-slate-600 leading-relaxed font-medium">
                 Remitansi konvensional memotong biaya 5–6.36%. Di Pundi, biaya hanya ~1% di jaringan Stellar, dan selisihnya otomatis menjadi tabungan emas keluarga Anda.
               </p>
               <button
                 type="button"
                 onClick={() => setActiveTab("panduan")}
-                className="text-sm font-bold text-amber-700 hover:underline inline-flex items-center gap-1 mt-1"
+                className="text-base font-bold text-amber-700 hover:underline inline-flex items-center gap-1 mt-2"
               >
                 Pelajari alur cara kerja & FAQ →
               </button>
@@ -179,7 +138,7 @@ export function InventoryApp() {
 
         {/* TAB 2: ATURAN TABUNGAN */}
         {activeTab === "aturan" && (
-          <div className="max-w-2xl mx-auto space-y-8">
+          <div className="max-w-2xl mx-auto space-y-10">
             <SavingsRuleSetup
               existingRule={savingsRule}
               onSave={setRule}
@@ -191,20 +150,63 @@ export function InventoryApp() {
 
         {/* TAB 3: DASHBOARD & RIWAYAT */}
         {activeTab === "dashboard" && (
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-            <div className="lg:col-span-5 space-y-6">
-              <GoldVaultCard
-                totalGoldMg={totalGoldMg}
-                remittanceCount={remittances.length}
-                goalLabel={savingsRule?.label}
-              />
-            </div>
-            <div className="lg:col-span-7">
-              <RemittanceHistory
-                remittances={remittances}
-                loading={dataLoading}
-                onRefresh={loadData}
-              />
+          <div className="space-y-10">
+            {/* Hero Stats */}
+            {connected && (remittances.length > 0 || Number(totalGoldMg) > 0) && (
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-6">
+                <div className="p-6 rounded-3xl bg-white border border-slate-200/90 shadow-sm">
+                  <p className="text-sm font-bold text-slate-400 uppercase tracking-widest">
+                    Total Terkirim
+                  </p>
+                  <p className="text-2xl sm:text-3xl font-black text-slate-900 mt-2 font-display truncate">
+                    {formatIDR(totalSentIDR)}
+                  </p>
+                  <p className="text-sm text-slate-400 mt-1 font-medium">
+                    {remittances.length}× kiriman selesai
+                  </p>
+                </div>
+
+                <div className="p-6 rounded-3xl bg-gradient-to-br from-amber-50/90 to-amber-100/40 border border-amber-200/90 shadow-sm">
+                  <p className="text-sm font-bold text-amber-800 uppercase tracking-widest">
+                    Saldo Emas Fisik
+                  </p>
+                  <p className="text-2xl sm:text-3xl font-black text-amber-600 mt-2 font-display truncate">
+                    {goldGrams >= 0.001 ? `${goldGrams.toFixed(3)} gram` : formatGold(totalGoldMg)}
+                  </p>
+                  <p className="text-sm text-amber-800/80 mt-1 font-bold">
+                    ≈ {formatIDR(goldValueIDR)}
+                  </p>
+                </div>
+
+                <div className="p-6 rounded-3xl bg-gradient-to-br from-emerald-50/90 to-emerald-100/40 border border-emerald-200/90 shadow-sm col-span-2 sm:col-span-1">
+                  <p className="text-sm font-bold text-emerald-800 uppercase tracking-widest">
+                    Aturan Tabungan
+                  </p>
+                  <p className="text-xl sm:text-2xl font-black text-emerald-950 mt-2 font-display truncate">
+                    {savingsRule ? `${savingsRule.savings_bps / 100}% (${savingsRule.label})` : "10% Default"}
+                  </p>
+                  <p className="text-sm text-emerald-700 font-bold mt-1.5 flex items-center gap-2">
+                    <ShieldCheck className="w-5 h-5 text-emerald-600" /> On-Chain Soroban
+                  </p>
+                </div>
+              </div>
+            )}
+
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
+              <div className="lg:col-span-5 space-y-8">
+                <GoldVaultCard
+                  totalGoldMg={totalGoldMg}
+                  remittanceCount={remittances.length}
+                  goalLabel={savingsRule?.label}
+                />
+              </div>
+              <div className="lg:col-span-7">
+                <RemittanceHistory
+                  remittances={remittances}
+                  loading={dataLoading}
+                  onRefresh={loadData}
+                />
+              </div>
             </div>
           </div>
         )}
