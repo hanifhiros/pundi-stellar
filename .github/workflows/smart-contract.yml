@@ -1,0 +1,49 @@
+name: Smart Contract CI
+
+on:
+  push:
+    branches:
+      - main
+      - master
+  pull_request:
+    branches:
+      - main
+      - master
+  workflow_dispatch:
+
+concurrency:
+  group: smart-contract-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    name: Build and test Soroban contract
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install Rust toolchain
+        uses: dtolnay/rust-toolchain@1.92.0
+        with:
+          components: rustfmt
+          targets: wasm32v1-none
+
+      - name: Install Stellar CLI
+        uses: stellar/stellar-cli@v25.2.0
+
+      - name: Verify Stellar CLI
+        run: stellar --version
+
+      - name: Check Rust formatting
+        run: cargo fmt --all -- --check
+
+      - name: Build smart contract
+        run: stellar contract build
+
+      - name: Verify WASM artifact
+        run: test -f target/wasm32v1-none/release/notes.wasm
+
+      - name: Run smart contract tests
+        run: cargo test --workspace
