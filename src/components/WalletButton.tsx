@@ -1,109 +1,51 @@
 "use client";
 
-import { useState } from "react";
 import { useFreighter } from "@/hooks/useFreighter";
 import { shortenAddress } from "@/lib/stellar";
+import { LogOut, Loader2, Zap } from "lucide-react";
 
 export function WalletButton() {
-  const { connected, address, network, installed, loading, connect, disconnect } =
-    useFreighter();
-  const [connecting, setConnecting] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-
-  const handleConnect = async () => {
-    setConnecting(true);
-    setError(null);
-    try {
-      await connect();
-    } catch (err) {
-      setError(err instanceof Error ? err.message : "Gagal menyambungkan wallet");
-    } finally {
-      setConnecting(false);
-    }
-  };
-
-  if (loading) {
-    return (
-      <button className="btn btn-outline btn-sm" disabled>
-        Memuat...
-      </button>
-    );
-  }
-
-  if (!installed) {
-    return (
-      <a
-        href="https://www.freighter.app/"
-        target="_blank"
-        rel="noopener noreferrer"
-        className="btn btn-gold btn-sm"
-      >
-        Pasang Freighter
-      </a>
-    );
-  }
+  const { connected, address, connect, disconnect, loading } = useFreighter();
 
   if (connected && address) {
     return (
-      <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-        <div
-          style={{
-            textAlign: "right",
-            padding: "6px 12px",
-            background: "var(--bg-subtle)",
-            borderRadius: 8,
-            border: "1px solid var(--border)",
-          }}
-        >
-          <div
-            style={{
-              display: "flex",
-              alignItems: "center",
-              gap: 6,
-              justifyContent: "flex-end",
-            }}
-          >
-            <span
-              style={{
-                width: 7,
-                height: 7,
-                borderRadius: "50%",
-                background: "#22c55e",
-                display: "inline-block",
-              }}
-            />
-            <span style={{ fontSize: 12, fontWeight: 600, color: "#15803D" }}>
-              Tersambung
-            </span>
-          </div>
-          <p style={{ fontSize: 12, color: "var(--text-medium)", fontFamily: "monospace" }}>
+      <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2.5 px-4 py-2 bg-amber-50 border border-amber-300 rounded-full shadow-2xs">
+          <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse shrink-0" />
+          <span className="text-xs font-mono font-bold text-amber-950">
             {shortenAddress(address)}
-          </p>
-          <p style={{ fontSize: 11, color: "var(--text-xlight)" }}>
-            {network ?? "testnet"}
-          </p>
+          </span>
         </div>
-        <button className="btn btn-outline btn-sm" onClick={disconnect}>
-          Putus
+        <button
+          type="button"
+          onClick={disconnect}
+          className="p-2 text-slate-400 hover:text-rose-600 hover:bg-slate-100 rounded-full transition-colors cursor-pointer"
+          title="Putus Sambungan"
+        >
+          <LogOut className="w-4 h-4" />
         </button>
       </div>
     );
   }
 
   return (
-    <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-end", gap: 4 }}>
-      <button
-        className="btn btn-gold btn-sm"
-        onClick={handleConnect}
-        disabled={connecting}
-      >
-        {connecting ? "Menyambung..." : "🔑 Sambung Wallet"}
-      </button>
-      {error && (
-        <p style={{ fontSize: 12, color: "var(--error)", textAlign: "right" }}>
-          {error}
-        </p>
+    <button
+      type="button"
+      onClick={connect}
+      disabled={loading}
+      className="btn-wallet-primary"
+    >
+      {loading ? (
+        <>
+          <Loader2 className="w-4 h-4 animate-spin" />
+          <span>Menyambungkan...</span>
+        </>
+      ) : (
+        <>
+          <Zap className="w-4 h-4 fill-current" />
+          <span>Sambung Freighter</span>
+        </>
       )}
-    </div>
+    </button>
   );
 }

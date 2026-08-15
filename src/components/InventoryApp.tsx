@@ -6,31 +6,39 @@ import { RemittanceHistory } from "@/components/InventoryList";
 import { GoldVaultCard } from "@/components/GoldVaultCard";
 import { SavingsRuleSetup } from "@/components/SavingsRuleSetup";
 import { GuideFaqSection } from "@/components/GuideFaqSection";
+import { WalletRequiredBanner } from "@/components/WalletRequiredBanner";
 import { usePundi } from "@/hooks/usePundi";
 import { useFreighter } from "@/hooks/useFreighter";
-import { shortenAddress } from "@/lib/stellar";
+import {
+  formatGold,
+  formatIDR,
+  estimateGoldValueIDR,
+  USDC_TO_IDR_RATE,
+} from "@/lib/stellar";
 import {
   Send,
   Sliders,
-  LayoutDashboard,
+  Coins,
+  History,
   HelpCircle,
-  Globe,
-  Wallet,
-  LogOut,
+  ShieldCheck,
+  Zap,
+  Sparkles,
+  X,
 } from "lucide-react";
 
-type NavTab = "kirim" | "aturan" | "dashboard" | "panduan";
+type TabKey = "kirim" | "aturan" | "dashboard" | "panduan";
 
-const MENU_ITEMS = [
-  { id: "kirim" as NavTab, label: "Kirim Uang", icon: Send },
-  { id: "aturan" as NavTab, label: "Aturan Nabung", icon: Sliders },
-  { id: "dashboard" as NavTab, label: "Dashboard", icon: LayoutDashboard },
-  { id: "panduan" as NavTab, label: "Panduan & FAQ", icon: HelpCircle },
+const TABS: { key: TabKey; label: string; icon: React.ComponentType<{ className?: string }> }[] = [
+  { key: "kirim", label: "Kirim Uang", icon: Send },
+  { key: "aturan", label: "Aturan Tabungan", icon: Sliders },
+  { key: "dashboard", label: "Brankas & Riwayat", icon: Coins },
+  { key: "panduan", label: "Panduan & FAQ", icon: HelpCircle },
 ];
 
 export function InventoryApp() {
-  const [activeTab, setActiveTab] = useState<NavTab>("kirim");
-  const { connected, address, connect, disconnect, loading: walletLoading } = useFreighter();
+  const { connected } = useFreighter();
+  const [activeTab, setActiveTab] = useState<TabKey>("kirim");
 
   const {
     savingsRule,
@@ -38,172 +46,190 @@ export function InventoryApp() {
     totalGoldMg,
     loading: dataLoading,
     actionLoading,
+    error,
+    message,
     loadData,
     setRule,
     sendRemittance,
+    clearFeedback,
   } = usePundi();
 
+  const totalSentIDR = remittances.reduce(
+    (acc, r) => acc + (Number(r.total_usdc) / 1_000_000) * USDC_TO_IDR_RATE,
+    0
+  );
+  const goldValueIDR = estimateGoldValueIDR(Number(totalGoldMg));
+  const goldGrams = Number(totalGoldMg) / 1000;
+
   return (
-    <div className="pundi-layout">
-      {/* ── Left Sidebar (Desktop & Mobile Drawer) ── */}
-      <aside className="pundi-sidebar">
-        <div>
-          {/* Brand Logo */}
-          <div className="flex items-center gap-2.5 mb-8">
-            <div className="w-9 h-9 rounded-xl bg-emerald-700 text-white flex items-center justify-center font-black text-lg shadow-sm">
-              p
-            </div>
-            <span className="text-2xl font-black text-emerald-800 tracking-tight">
-              pundi
-            </span>
-          </div>
+    <div className="space-y-8">
+      {/* Wallet Required Notice */}
+      <WalletRequiredBanner />
 
-          {/* Navigation Menu */}
-          <nav className="space-y-1">
-            {MENU_ITEMS.map((item) => {
-              const Icon = item.icon;
-              const isActive = activeTab === item.id;
-              return (
-                <button
-                  key={item.id}
-                  type="button"
-                  onClick={() => setActiveTab(item.id)}
-                  className={`w-full flex items-center gap-3.5 px-4 py-3 rounded-xl font-bold text-sm transition-all text-left ${
-                    isActive
-                      ? "bg-emerald-50 text-emerald-800 font-extrabold"
-                      : "text-slate-600 hover:bg-slate-50 hover:text-slate-900 font-semibold"
-                  }`}
-                >
-                  <Icon
-                    className={`w-4 h-4 shrink-0 ${
-                      isActive ? "text-emerald-700" : "text-slate-400"
-                    }`}
-                  />
-                  <span>{item.label}</span>
-                </button>
-              );
-            })}
-          </nav>
+      {/* Global Feedback Banner */}
+      {(error || message) && (
+        <div
+          className={`p-4 rounded-2xl flex items-center justify-between gap-3 animate-in fade-in ${
+            error
+              ? "bg-rose-50 border border-rose-200 text-rose-800"
+              : "bg-emerald-50 border border-emerald-200 text-emerald-800"
+          }`}
+        >
+          <span className="text-sm font-bold">{error ?? message}</span>
+          <button
+            type="button"
+            onClick={clearFeedback}
+            className="p-1 hover:opacity-75 cursor-pointer"
+            aria-label="Tutup"
+          >
+            <X className="w-4 h-4" />
+          </button>
         </div>
+      )}
 
-        {/* Sidebar Bottom Footer Info */}
-        <div className="pt-5 border-t border-slate-200 space-y-3">
-          {/* Wallet Status Card */}
-          <div className="p-3 rounded-xl bg-slate-50 border border-slate-200 space-y-1.5">
-            <div className="flex items-center justify-between text-xs">
-              <span className="text-slate-500 font-semibold flex items-center gap-1">
-                <Wallet className="w-3.5 h-3.5" /> Dompet
-              </span>
-              <span className="text-[10px] font-bold text-indigo-700 bg-indigo-50 border border-indigo-200 px-2 py-0.5 rounded-full">
-                Testnet
-              </span>
-            </div>
-
-            {connected && address ? (
-              <div className="flex items-center justify-between gap-2 pt-0.5">
-                <div className="min-w-0">
-                  <p className="text-xs font-mono font-bold text-slate-800 truncate">
-                    {shortenAddress(address)}
-                  </p>
-                  <p className="text-[10px] text-emerald-700 font-semibold flex items-center gap-1 mt-0.5">
-                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-600 inline-block" />
-                    Tersambung
-                  </p>
-                </div>
-                <button
-                  type="button"
-                  onClick={disconnect}
-                  className="p-1.5 text-slate-400 hover:text-rose-600 hover:bg-white rounded-lg transition-colors"
-                  title="Putus Sambungan"
-                >
-                  <LogOut className="w-3.5 h-3.5" />
-                </button>
-              </div>
-            ) : (
-              <button
-                type="button"
-                onClick={connect}
-                disabled={walletLoading}
-                className="w-full mt-1 py-1.5 px-3 bg-white hover:bg-slate-100 text-emerald-800 border border-slate-200 rounded-lg text-xs font-bold transition-all flex items-center justify-center gap-1.5 shadow-2xs"
-              >
-                <Wallet className="w-3.5 h-3.5 text-emerald-600" />
-                <span>Sambung Wallet</span>
-              </button>
-            )}
+      {/* Hero Stats (Visible when connected with data) */}
+      {connected && (remittances.length > 0 || Number(totalGoldMg) > 0) && (
+        <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
+          <div className="p-5 rounded-2xl bg-white border border-slate-200/90 shadow-card">
+            <p className="text-xs font-bold text-slate-400 uppercase tracking-wider">
+              Total Terkirim
+            </p>
+            <p className="text-xl sm:text-2xl font-black text-slate-900 mt-1.5 font-display truncate">
+              {formatIDR(totalSentIDR)}
+            </p>
+            <p className="text-xs text-slate-400 mt-0.5 font-medium">
+              {remittances.length}× kiriman selesai
+            </p>
           </div>
 
-          <div className="space-y-1 text-xs text-slate-400">
-            <div className="flex items-center gap-1.5 font-medium">
-              <Globe className="w-3.5 h-3.5" />
-              <span>Bahasa: <strong>Indonesia (ID)</strong></span>
-            </div>
-            <p className="text-[10px] text-slate-400 leading-snug">
-              Ditenagai oleh Stellar Soroban. Transaksi tercatat aman on-chain.
+          <div className="p-5 rounded-2xl bg-gradient-to-br from-amber-50/90 to-amber-100/40 border border-amber-200/90 shadow-card">
+            <p className="text-xs font-bold text-amber-800 uppercase tracking-wider">
+              Saldo Emas Fisik
+            </p>
+            <p className="text-xl sm:text-2xl font-black text-amber-600 mt-1.5 font-display truncate">
+              {goldGrams >= 0.001 ? `${goldGrams.toFixed(3)} gram` : formatGold(totalGoldMg)}
+            </p>
+            <p className="text-xs text-amber-800/80 mt-0.5 font-bold">
+              ≈ {formatIDR(goldValueIDR)}
+            </p>
+          </div>
+
+          <div className="p-5 rounded-2xl bg-gradient-to-br from-emerald-50/90 to-emerald-100/40 border border-emerald-200/90 shadow-card col-span-2 sm:col-span-1">
+            <p className="text-xs font-bold text-emerald-800 uppercase tracking-wider">
+              Aturan Tabungan
+            </p>
+            <p className="text-base sm:text-lg font-black text-emerald-950 mt-1.5 font-display truncate">
+              {savingsRule ? `${savingsRule.savings_bps / 100}% (${savingsRule.label})` : "10% Default"}
+            </p>
+            <p className="text-xs text-emerald-700 font-bold mt-0.5 flex items-center gap-1">
+              <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" /> On-Chain Soroban
             </p>
           </div>
         </div>
-      </aside>
+      )}
 
-      {/* ── Main Canvas (Centered with Whitespace) ── */}
-      <main className="pundi-main">
-        <div className="pundi-container">
-          {/* TAB 1: KIRIM UANG */}
-          {activeTab === "kirim" && (
-            <SendRemittanceForm
-              savingsRule={savingsRule}
-              onSubmit={sendRemittance}
-              loading={actionLoading}
-            />
-          )}
+      {/* Pill Navigation Bar */}
+      <div className="flex justify-center">
+        <div className="nav-pill-track overflow-x-auto max-w-full">
+          {TABS.map((tab) => {
+            const Icon = tab.icon;
+            const isActive = activeTab === tab.key;
+            return (
+              <button
+                key={tab.key}
+                type="button"
+                onClick={() => setActiveTab(tab.key)}
+                className={`nav-pill-btn font-display ${isActive ? "active" : ""}`}
+              >
+                <Icon className={`w-4 h-4 ${isActive ? "text-amber-600" : "text-slate-400"}`} />
+                <span>{tab.label}</span>
+              </button>
+            );
+          })}
+        </div>
+      </div>
 
-          {/* TAB 2: ATURAN NABUNG */}
-          {activeTab === "aturan" && (
-            <SavingsRuleSetup
-              existingRule={savingsRule}
-              onSave={setRule}
-              loading={actionLoading}
-              totalGoldMg={totalGoldMg}
-            />
-          )}
-
-          {/* TAB 3: DASHBOARD & RIWAYAT */}
-          {activeTab === "dashboard" && (
-            <div className="space-y-6">
-              <div>
-                <h1 className="pundi-title">Dashboard</h1>
-                <p className="pundi-subtitle">
-                  Pantau tabungan emas dan tarik kapan saja
-                </p>
-              </div>
-
+      {/* Tab Content Views */}
+      <div className="pt-2">
+        {/* TAB 1: KIRIM UANG */}
+        {activeTab === "kirim" && (
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+            <div className="lg:col-span-7">
+              <SendRemittanceForm
+                savingsRule={savingsRule}
+                onSubmit={sendRemittance}
+                loading={actionLoading}
+              />
+            </div>
+            <div className="lg:col-span-5 space-y-6">
               <GoldVaultCard
                 totalGoldMg={totalGoldMg}
                 remittanceCount={remittances.length}
                 goalLabel={savingsRule?.label}
               />
+              <div className="p-6 rounded-2xl bg-white border border-slate-200/90 shadow-card space-y-3">
+                <h3 className="text-sm font-bold text-slate-900 font-display flex items-center gap-2">
+                  <span>💡</span> Keunggulan Pundi
+                </h3>
+                <p className="text-xs text-slate-600 leading-relaxed font-medium">
+                  Remitansi konvensional memotong biaya 5–6.36%. Di Pundi, biaya hanya ~1% di jaringan Stellar, dan selisihnya otomatis menjadi tabungan emas keluarga Anda.
+                </p>
+                <button
+                  type="button"
+                  onClick={() => setActiveTab("panduan")}
+                  className="text-xs font-bold text-amber-700 hover:underline inline-flex items-center gap-1"
+                >
+                  Pelajari alur cara kerja & FAQ →
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
 
+        {/* TAB 2: ATURAN TABUNGAN */}
+        {activeTab === "aturan" && (
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+            <div className="lg:col-span-7">
+              <SavingsRuleSetup
+                existingRule={savingsRule}
+                onSave={setRule}
+                loading={actionLoading}
+                totalGoldMg={totalGoldMg}
+              />
+            </div>
+            <div className="lg:col-span-5 space-y-6">
+              <GoldVaultCard
+                totalGoldMg={totalGoldMg}
+                remittanceCount={remittances.length}
+                goalLabel={savingsRule?.label}
+              />
+            </div>
+          </div>
+        )}
+
+        {/* TAB 3: DASHBOARD & RIWAYAT */}
+        {activeTab === "dashboard" && (
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+            <div className="lg:col-span-5 space-y-6">
+              <GoldVaultCard
+                totalGoldMg={totalGoldMg}
+                remittanceCount={remittances.length}
+                goalLabel={savingsRule?.label}
+              />
+            </div>
+            <div className="lg:col-span-7">
               <RemittanceHistory
                 remittances={remittances}
                 loading={dataLoading}
                 onRefresh={loadData}
               />
             </div>
-          )}
+          </div>
+        )}
 
-          {/* TAB 4: PANDUAN & FAQ */}
-          {activeTab === "panduan" && (
-            <div className="space-y-6">
-              <div>
-                <h1 className="pundi-title">Panduan & Tanya Jawab</h1>
-                <p className="pundi-subtitle">
-                  Pelajari cara kerja Pundi dan jawaban lengkap seputar keamanan
-                </p>
-              </div>
-              <GuideFaqSection />
-            </div>
-          )}
-        </div>
-      </main>
+        {/* TAB 4: PANDUAN & FAQ */}
+        {activeTab === "panduan" && <GuideFaqSection />}
+      </div>
     </div>
   );
 }

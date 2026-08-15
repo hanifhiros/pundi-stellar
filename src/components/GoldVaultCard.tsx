@@ -8,13 +8,11 @@ import {
   getStellarExpertContractUrl,
 } from "@/lib/stellar";
 import {
-  Coins,
   ShieldCheck,
   ExternalLink,
   ArrowDownLeft,
+  Coins,
   CheckCircle2,
-  AlertCircle,
-  HelpCircle,
 } from "lucide-react";
 
 interface GoldVaultCardProps {
@@ -28,69 +26,69 @@ export function GoldVaultCard({
   remittanceCount,
   goalLabel,
 }: GoldVaultCardProps) {
-  const [showWithdrawModal, setShowWithdrawModal] = useState(false);
-  const [withdrawGrams, setWithdrawGrams] = useState("");
-  const [withdrawStatus, setWithdrawStatus] = useState<string | null>(null);
+  const [showWithdraw, setShowWithdraw] = useState(false);
+  const [withdrawAmount, setWithdrawAmount] = useState("");
+  const [withdrawNotice, setWithdrawNotice] = useState<string | null>(null);
 
   const mg = Number(totalGoldMg);
   const grams = mg / 1000;
   const valueIDR = estimateGoldValueIDR(mg);
   const hasGold = mg > 0;
 
-  const handleSimulateWithdraw = (e: React.FormEvent) => {
+  const handleWithdraw = (e: React.FormEvent) => {
     e.preventDefault();
-    const reqGrams = parseFloat(withdrawGrams) || 0;
+    const reqGrams = parseFloat(withdrawAmount) || 0;
     if (reqGrams <= 0 || reqGrams > grams) {
-      setWithdrawStatus("Nominal gram tidak valid atau melebihi saldo.");
+      setWithdrawNotice("Nominal gram tidak valid atau melebihi saldo emas.");
       return;
     }
     const payoutIDR = (reqGrams / grams) * valueIDR;
-    setWithdrawStatus(
+    setWithdrawNotice(
       `Sukses! Simulasi penarikan ${reqGrams} gram emas berhasil. Dana setara ${formatIDR(
         payoutIDR
       )} diteruskan ke rekening bank via BI-FAST.`
     );
-    setWithdrawGrams("");
+    setWithdrawAmount("");
   };
 
   return (
-    <div className="card-gold space-y-6">
+    <div className="pundi-card-gold-premium space-y-6">
       {/* Header */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl bg-amber-100/80 border border-amber-300 flex items-center justify-center text-amber-700">
-            <Coins className="w-5 h-5" />
+          <div className="w-10 h-10 rounded-2xl bg-amber-500/10 border border-amber-300 flex items-center justify-center text-xl">
+            🪙
           </div>
           <div>
-            <h2 className="text-sm font-bold uppercase tracking-wider text-amber-900">
+            <h2 className="text-xs font-bold uppercase tracking-wider text-amber-800 font-display">
               Brankas Emas Saya
             </h2>
-            <p className="text-xs text-amber-700 font-medium">
-              Emas Murni Fisik 99.99% · Dikelola Matrixdock
+            <p className="text-xs text-amber-900/70 font-medium">
+              Emas Murni Fisik LBMA 99.99% · Matrixdock
             </p>
           </div>
         </div>
-        <span className="badge-gold bg-amber-100/60 border-amber-300 text-amber-800">
-          <ShieldCheck className="w-3.5 h-3.5" /> LBMA 99.99%
+        <span className="badge-gold-subtle">
+          <ShieldCheck className="w-3.5 h-3.5" /> Terverifikasi
         </span>
       </div>
 
-      {/* Main Gold Valuation */}
-      <div className="p-4 rounded-2xl bg-white/80 border border-amber-200/80 shadow-xs space-y-2">
-        <div className="flex items-baseline justify-between flex-wrap gap-2">
-          <span className="text-xs font-bold text-gray-400 uppercase tracking-wider">
-            Total Tabungan Emas
+      {/* Gold Balance Figure */}
+      <div className="p-5 rounded-2xl bg-white/90 border border-amber-200/90 shadow-2xs space-y-1.5">
+        <div className="flex items-center justify-between text-xs">
+          <span className="font-bold text-slate-400 uppercase tracking-wider">
+            Total Saldo Emas
           </span>
           {goalLabel && (
-            <span className="text-xs font-bold text-amber-700 bg-amber-50 px-2 py-0.5 rounded-md border border-amber-200">
-              Untuk: {goalLabel}
+            <span className="text-[11px] font-bold text-amber-800 bg-amber-100/70 px-2.5 py-0.5 rounded-full">
+              Tujuan: {goalLabel}
             </span>
           )}
         </div>
 
         {hasGold ? (
-          <div>
-            <p className="text-3xl sm:text-4xl font-black text-amber-600 tracking-tight leading-none">
+          <div className="pt-1">
+            <p className="text-3xl sm:text-4xl font-black text-amber-600 font-display tracking-tight">
               {grams >= 0.001
                 ? `${grams.toLocaleString("id-ID", {
                     minimumFractionDigits: 3,
@@ -98,74 +96,67 @@ export function GoldVaultCard({
                   })} gram`
                 : formatGold(totalGoldMg)}
             </p>
-            <p className="text-lg font-bold text-gray-800 mt-2">
+            <p className="text-base font-bold text-slate-800 mt-1">
               ≈ {formatIDR(valueIDR)}
             </p>
-            <p className="text-xs text-gray-400 mt-0.5">
+            <p className="text-xs text-slate-400 mt-0.5">
               Nilai Rupiah mengikuti harga emas dunia secara real-time
             </p>
           </div>
         ) : (
-          <div className="py-2">
-            <p className="text-base font-bold text-gray-700">
+          <div className="py-2 space-y-1">
+            <p className="text-base font-bold text-slate-800">
               Belum ada emas tersimpan
             </p>
-            <p className="text-xs text-gray-500 mt-1">
-              Kirim uang pertama Anda sekarang untuk mulai mengumpulkan emas otomatis.
+            <p className="text-xs text-slate-500">
+              Kirim uang pertama Anda untuk mulai menabung emas secara otomatis.
             </p>
           </div>
         )}
       </div>
 
-      {/* Key Metric Stats Grid */}
-      <div className="grid grid-cols-3 gap-2 pt-1 border-t border-amber-200/60 text-center">
-        <div className="p-2.5 bg-amber-50/50 rounded-xl">
-          <p className="text-[11px] text-gray-500 font-medium">Total Kiriman</p>
-          <p className="text-base font-black text-gray-900 mt-0.5">
-            {remittanceCount}×
-          </p>
+      {/* 3 Metric Badges */}
+      <div className="grid grid-cols-3 gap-2.5 pt-1 text-center">
+        <div className="p-3 bg-amber-50/60 rounded-xl border border-amber-100/80">
+          <p className="text-[11px] text-slate-500 font-semibold">Total Kiriman</p>
+          <p className="text-base font-black text-slate-900 mt-0.5">{remittanceCount}×</p>
         </div>
-        <div className="p-2.5 bg-emerald-50/50 rounded-xl">
-          <p className="text-[11px] text-emerald-700 font-medium">Biaya Kirim</p>
+        <div className="p-3 bg-emerald-50/60 rounded-xl border border-emerald-100/80">
+          <p className="text-[11px] text-emerald-700 font-semibold">Biaya Kirim</p>
           <p className="text-base font-black text-emerald-700 mt-0.5">~1%</p>
         </div>
-        <div className="p-2.5 bg-amber-50/50 rounded-xl">
-          <p className="text-[11px] text-gray-500 font-medium">Biaya Jaringan</p>
-          <p className="text-base font-black text-gray-900 mt-0.5">~$0.000003</p>
+        <div className="p-3 bg-amber-50/60 rounded-xl border border-amber-100/80">
+          <p className="text-[11px] text-slate-500 font-semibold">Biaya Jaringan</p>
+          <p className="text-base font-black text-slate-900 mt-0.5">~$0.000003</p>
         </div>
       </div>
 
-      {/* Withdraw & Verification Action Buttons */}
-      <div className="space-y-3 pt-1">
+      {/* Withdraw simulation */}
+      <div className="space-y-3 pt-1 border-t border-amber-200/60">
         {hasGold && (
-          <div>
-            <button
-              type="button"
-              onClick={() => setShowWithdrawModal(!showWithdrawModal)}
-              className="btn btn-outline w-full h-11 text-xs font-bold border-amber-300 text-amber-900 hover:bg-amber-100/50 flex items-center justify-center gap-1.5"
-            >
-              <ArrowDownLeft className="w-4 h-4 text-amber-600" />
-              <span>
-                {showWithdrawModal ? "Tutup Menu Tarik" : "Tarik Tabungan Emas (Kapan Saja)"}
-              </span>
-            </button>
-          </div>
+          <button
+            type="button"
+            onClick={() => setShowWithdraw(!showWithdraw)}
+            className="w-full py-2.5 px-4 rounded-xl border border-amber-300 bg-white hover:bg-amber-50/50 text-amber-900 font-bold text-xs flex items-center justify-center gap-1.5 transition-all shadow-2xs"
+          >
+            <ArrowDownLeft className="w-4 h-4 text-amber-600" />
+            <span>{showWithdraw ? "Tutup Menu Tarik" : "Tarik Tabungan Emas (Kapan Saja)"}</span>
+          </button>
         )}
 
-        {/* Withdraw Simulation Box */}
-        {showWithdrawModal && hasGold && (
+        {showWithdraw && hasGold && (
           <form
-            onSubmit={handleSimulateWithdraw}
-            className="p-4 rounded-xl bg-white border border-amber-300 space-y-3 animate-in fade-in duration-200"
+            onSubmit={handleWithdraw}
+            className="p-4 rounded-xl bg-white border border-amber-300 space-y-3 animate-in fade-in"
           >
             <div className="flex items-center gap-2">
-              <span className="text-sm">🏧</span>
-              <p className="text-xs font-bold text-gray-900">
+              <span className="text-base">🏧</span>
+              <p className="text-xs font-bold text-slate-900">
                 Pencairan Emas ke Rekening / DANA
               </p>
             </div>
-            <p className="text-xs text-gray-500">
-              Tidak ada kunci waktu atau penalti. Masukkan gram emas yang ingin dicairkan:
+            <p className="text-xs text-slate-500">
+              Tidak ada kunci waktu atau biaya penalti:
             </p>
 
             <div className="flex gap-2">
@@ -174,42 +165,41 @@ export function GoldVaultCard({
                 step="0.001"
                 max={grams}
                 min="0.001"
-                value={withdrawGrams}
-                onChange={(e) => setWithdrawGrams(e.target.value)}
+                value={withdrawAmount}
+                onChange={(e) => setWithdrawAmount(e.target.value)}
                 placeholder={`Maks: ${grams.toFixed(3)} gr`}
-                className="pundi-input h-10 text-xs font-bold"
+                className="w-full px-3 py-2 border border-slate-300 rounded-lg text-xs font-bold outline-none focus:border-amber-500"
               />
               <button
                 type="submit"
-                className="btn btn-gold h-10 px-4 text-xs font-bold shrink-0"
+                className="px-4 py-2 bg-amber-600 hover:bg-amber-700 text-white rounded-lg text-xs font-bold shrink-0"
               >
                 Cairkan
               </button>
             </div>
 
-            {withdrawStatus && (
+            {withdrawNotice && (
               <div
                 className={`p-3 rounded-lg text-xs ${
-                  withdrawStatus.startsWith("Sukses")
+                  withdrawNotice.startsWith("Sukses")
                     ? "bg-emerald-50 text-emerald-800 border border-emerald-200"
-                    : "bg-red-50 text-red-800 border border-red-200"
+                    : "bg-rose-50 text-rose-800 border border-rose-200"
                 }`}
               >
-                {withdrawStatus}
+                {withdrawNotice}
               </div>
             )}
           </form>
         )}
 
-        {/* External Matrixdock Proof Links */}
         <div className="flex items-center justify-between text-xs pt-1">
           <a
             href="https://www.matrixdock.com/products/xaum"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-1 text-amber-800 font-semibold hover:underline"
+            className="inline-flex items-center gap-1 text-amber-800 font-bold hover:underline"
           >
-            <span>Audit Emas Fisik Matrixdock</span>
+            <span>Audit Emas Matrixdock</span>
             <ExternalLink className="w-3.5 h-3.5 text-amber-600" />
           </a>
 
@@ -217,7 +207,7 @@ export function GoldVaultCard({
             href={getStellarExpertContractUrl()}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-1 text-gray-500 font-semibold hover:underline"
+            className="inline-flex items-center gap-1 text-slate-500 font-bold hover:underline"
           >
             <span>Smart Contract di Stellar</span>
             <ExternalLink className="w-3.5 h-3.5" />

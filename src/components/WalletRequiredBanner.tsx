@@ -1,58 +1,37 @@
 "use client";
 
-import { useState } from "react";
 import { useFreighter } from "@/hooks/useFreighter";
+import { Zap } from "lucide-react";
 
 export function WalletRequiredBanner() {
-  const { connected, loading, connect } = useFreighter();
-  const [connecting, setConnecting] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const { connected, connect, loading } = useFreighter();
 
-  if (loading || connected) return null;
-
-  const handleConnect = async () => {
-    setConnecting(true);
-    setError(null);
-    try {
-      await connect();
-    } catch (err) {
-      setError(err instanceof Error ? err.message : "Gagal menyambungkan wallet");
-    } finally {
-      setConnecting(false);
-    }
-  };
+  if (connected) return null;
 
   return (
-    <div
-      style={{
-        background: "var(--gold-bg)",
-        border: "1.5px solid var(--gold-border)",
-        borderRadius: 12,
-        padding: "18px 22px",
-        marginBottom: 24,
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "space-between",
-        gap: 16,
-        flexWrap: "wrap",
-      }}
-    >
-      <div style={{ display: "flex", alignItems: "flex-start", gap: 12 }}>
-        <span style={{ fontSize: 22, lineHeight: 1.4 }}>🔒</span>
+    <div className="p-5 rounded-2xl bg-gradient-to-r from-amber-100/70 via-amber-50 to-amber-100/70 border border-amber-200 shadow-2xs flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <div className="flex items-center gap-3.5">
+        <div className="w-10 h-10 rounded-2xl bg-amber-500 text-white flex items-center justify-center text-xl shrink-0 shadow-xs">
+          🪙
+        </div>
         <div>
-          <p style={{ fontWeight: 700, fontSize: 15, color: "var(--text-dark)" }}>
-            Sambungkan wallet untuk mulai
+          <h3 className="text-sm font-bold text-amber-950 font-display">
+            Sambungkan Freighter untuk Mengirim & Menabung
+          </h3>
+          <p className="text-xs text-amber-900/80 mt-0.5 font-medium">
+            Semua transaksi dieksekusi secara instan dan aman di Stellar Soroban Testnet.
           </p>
-          <p style={{ fontSize: 14, color: "var(--text-medium)", marginTop: 2 }}>
-            Gunakan Freighter untuk mengirim uang dan mengatur tabungan emas.
-          </p>
-          {error && (
-            <p style={{ fontSize: 13, color: "var(--error)", marginTop: 6 }}>{error}</p>
-          )}
         </div>
       </div>
-      <button className="btn btn-gold" onClick={handleConnect} disabled={connecting} style={{ flexShrink: 0 }}>
-        {connecting ? "Menyambung..." : "⚡ Sambung Freighter"}
+
+      <button
+        type="button"
+        onClick={connect}
+        disabled={loading}
+        className="btn-banner-primary"
+      >
+        <Zap className="w-4 h-4 fill-current" />
+        <span>Sambung Sekarang</span>
       </button>
     </div>
   );

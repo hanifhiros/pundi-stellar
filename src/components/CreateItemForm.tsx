@@ -19,6 +19,7 @@ import {
   Loader2,
   ExternalLink,
   ShieldCheck,
+  Zap,
 } from "lucide-react";
 
 interface SendRemittanceFormProps {
@@ -112,225 +113,270 @@ export function SendRemittanceForm({
   const isProcessing = loading || sending;
 
   return (
-    <div>
-      {/* Page Title & Subtitle */}
-      <div>
-        <h1 className="pundi-title">Kirim Uang</h1>
-        <p className="pundi-subtitle">Kirim ke keluarga, otomatis tabung emas</p>
+    <div className="pundi-card-premium space-y-6">
+      {/* Card Header */}
+      <div className="flex items-center justify-between pb-4 border-b border-slate-100">
+        <div className="flex items-center gap-3">
+          <div className="w-10 h-10 rounded-2xl bg-amber-100 border border-amber-300 flex items-center justify-center text-amber-700">
+            <Send className="w-5 h-5" />
+          </div>
+          <div>
+            <h2 className="font-display font-extrabold text-xl text-slate-900 leading-tight">
+              Kirim Uang
+            </h2>
+            <p className="text-xs text-slate-500 mt-0.5">
+              {savingsPct}% otomatis disisihkan jadi tabungan emas keluarga
+            </p>
+          </div>
+        </div>
+        <span className="badge-green-subtle hidden sm:inline-flex">
+          <Zap className="w-3.5 h-3.5" /> Selesai ~5 detik
+        </span>
       </div>
 
-      {/* Main Form Card */}
-      <div className="pundi-card">
-        {/* Success Modal / Notification */}
-        {lastTxSuccess && (
-          <div className="mb-6 p-5 rounded-2xl bg-emerald-50 border border-emerald-300 space-y-4">
-            <div className="flex items-center gap-3 text-emerald-800">
-              <CheckCircle2 className="w-6 h-6 text-emerald-600 shrink-0" />
-              <div>
-                <h3 className="font-bold text-base text-emerald-950">
-                  Kiriman Berhasil Terkirim!
-                </h3>
-                <p className="text-xs text-emerald-700">
-                  Transaksi telah dieksekusi di Stellar Soroban Testnet.
-                </p>
-              </div>
+      {/* Success Receipt Modal */}
+      {lastTxSuccess && (
+        <div className="p-5 rounded-2xl bg-emerald-50 border border-emerald-300 space-y-4 animate-in fade-in">
+          <div className="flex items-center gap-3 text-emerald-900">
+            <CheckCircle2 className="w-6 h-6 text-emerald-600 shrink-0" />
+            <div>
+              <h3 className="font-bold text-base text-emerald-950">
+                Kiriman Berhasil Terkirim!
+              </h3>
+              <p className="text-xs text-emerald-700">
+                Transaksi telah dieksekusi secara atomik di Stellar Soroban Testnet.
+              </p>
             </div>
+          </div>
 
-            <div className="grid grid-cols-2 gap-3 pt-1">
-              <div className="p-3 bg-white rounded-xl border border-emerald-200">
-                <p className="text-xs text-slate-500 font-medium">Diterima Keluarga</p>
-                <p className="text-lg font-black text-emerald-700 mt-1">
-                  {formatIDR(lastTxSuccess.familyIDR)}
-                </p>
-                <p className="text-[11px] text-slate-400 mt-0.5">via BI-FAST / DANA</p>
-              </div>
-              <div className="p-3 bg-white rounded-xl border border-amber-200">
-                <p className="text-xs text-slate-500 font-medium">Tabungan Emas</p>
-                <p className="text-lg font-black text-amber-600 mt-1">
-                  +{lastTxSuccess.goldGrams.toFixed(3)} gr
-                </p>
-                <p className="text-[11px] text-slate-400 mt-0.5">Tujuan: {lastTxSuccess.label}</p>
-              </div>
+          <div className="grid grid-cols-2 gap-3 pt-1">
+            <div className="p-3.5 bg-white rounded-xl border border-emerald-200">
+              <p className="text-xs text-slate-500 font-semibold">Diterima Keluarga</p>
+              <p className="text-lg font-black text-emerald-700 mt-1">
+                {formatIDR(lastTxSuccess.familyIDR)}
+              </p>
+              <p className="text-[11px] text-slate-400 mt-0.5">via BI-FAST / DANA</p>
             </div>
+            <div className="p-3.5 bg-white rounded-xl border border-amber-200">
+              <p className="text-xs text-slate-500 font-semibold">Tabungan Emas</p>
+              <p className="text-lg font-black text-amber-600 mt-1">
+                +{lastTxSuccess.goldGrams.toFixed(3)} gr
+              </p>
+              <p className="text-[11px] text-slate-400 mt-0.5">Tujuan: {lastTxSuccess.label}</p>
+            </div>
+          </div>
 
-            <div className="pt-2 flex items-center justify-between border-t border-emerald-200/70">
-              <a
-                href={getStellarExpertContractUrl()}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-1.5 text-xs font-bold text-emerald-800 hover:underline"
-              >
-                <span>Cek Bukti di Stellar Expert</span>
-                <ExternalLink className="w-3.5 h-3.5" />
-              </a>
+          <div className="pt-2 flex items-center justify-between border-t border-emerald-200/70">
+            <a
+              href={getStellarExpertContractUrl()}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1.5 text-xs font-bold text-emerald-800 hover:underline"
+            >
+              <span>Cek Bukti di Stellar Expert</span>
+              <ExternalLink className="w-3.5 h-3.5" />
+            </a>
+            <button
+              type="button"
+              onClick={() => setLastTxSuccess(null)}
+              className="text-xs text-emerald-700 font-bold hover:underline"
+            >
+              Tutup
+            </button>
+          </div>
+        </div>
+      )}
+
+      <form onSubmit={handleSubmit} className="space-y-6">
+        {/* Negara Kerja */}
+        <div>
+          <label className="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-2.5">
+            Pilih Negara Kerja
+          </label>
+          <div className="grid grid-cols-3 sm:grid-cols-5 gap-2.5">
+            {SUPPORTED_CURRENCIES.map((c) => {
+              const isSelected = c.code === selectedCurrencyCode;
+              return (
+                <button
+                  key={c.code}
+                  type="button"
+                  onClick={() => setSelectedCurrencyCode(c.code)}
+                  disabled={isProcessing}
+                  className={`country-chip ${isSelected ? "active" : ""}`}
+                >
+                  <FlagIcon code={c.code} className="w-7 h-7" />
+                  <div className="text-center min-w-0">
+                    <p className="text-xs font-extrabold text-slate-900 leading-tight">
+                      {c.code}
+                    </p>
+                    <p className="text-[10px] text-slate-400 truncate mt-0.5">
+                      {c.country}
+                    </p>
+                  </div>
+                </button>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* Nominal Input */}
+        <div>
+          <div className="flex items-center justify-between mb-2">
+            <label
+              htmlFor="remittance-amount"
+              className="text-xs font-bold uppercase tracking-wider text-slate-500"
+            >
+              Nominal Kiriman ({currency.code})
+            </label>
+            <span className="text-xs font-semibold text-slate-400">
+              1 {currency.code} ≈ {(currency.rateToUSDC * USDC_TO_IDR_RATE).toLocaleString("id-ID")} IDR
+            </span>
+          </div>
+
+          <div className="pundi-input-box">
+            <div className="px-4 bg-slate-50 h-full flex items-center gap-2 border-r border-slate-200 shrink-0">
+              <FlagIcon code={currency.code} className="w-5 h-5" />
+              <span className="font-extrabold text-slate-800 text-sm">
+                {currency.code}
+              </span>
+            </div>
+            <input
+              id="remittance-amount"
+              type="number"
+              min="0"
+              step="any"
+              value={amount}
+              onChange={(e) => setAmount(e.target.value)}
+              placeholder="0"
+              disabled={isProcessing}
+              className="w-full h-full px-4 text-2xl font-black text-slate-900 bg-transparent outline-none font-display placeholder:text-slate-300"
+            />
+          </div>
+
+          {/* Quick preset chips */}
+          <div className="flex items-center gap-2 mt-2.5 flex-wrap">
+            <span className="text-[11px] text-slate-400 font-semibold">Nominal Cepat:</span>
+            {[200, 500, 1000, 2000].map((val) => (
               <button
+                key={val}
                 type="button"
-                onClick={() => setLastTxSuccess(null)}
-                className="text-xs text-emerald-700 font-medium hover:underline"
+                onClick={() => setAmount(val.toString())}
+                disabled={isProcessing}
+                className="px-3 py-1 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold transition-colors"
               >
-                Tutup
+                {val} {currency.code}
               </button>
+            ))}
+          </div>
+        </div>
+
+        {/* Keterangan */}
+        <div>
+          <label
+            htmlFor="remittance-label"
+            className="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-2"
+          >
+            Keterangan (Opsional)
+          </label>
+          <input
+            id="remittance-label"
+            type="text"
+            value={label}
+            onChange={(e) => setLabel(e.target.value)}
+            placeholder="misal: Kiriman Bulan Agustus, Sekolah Anak"
+            disabled={isProcessing}
+            maxLength={32}
+            className="w-full h-12 px-4 border border-slate-200 rounded-xl text-sm font-medium text-slate-800 outline-none focus:border-amber-500 transition-all bg-white"
+          />
+        </div>
+
+        {/* Transparent Live Breakdown */}
+        {numAmount > 0 && (
+          <div className="p-5 rounded-2xl bg-gradient-to-br from-amber-50/60 via-slate-50 to-emerald-50/40 border border-amber-200/80 space-y-4">
+            <div className="flex items-center justify-between">
+              <span className="text-xs font-bold text-amber-900 flex items-center gap-1.5 uppercase tracking-wider">
+                <ShieldCheck className="w-4 h-4 text-amber-600" />
+                Estimasi Transparan
+              </span>
+              <span className="text-xs font-bold text-emerald-700">
+                Total Biaya: <strong>~1%</strong> (Hemat vs 5-6%)
+              </span>
+            </div>
+
+            {/* Split Meter Bar */}
+            <div className="space-y-1.5">
+              <div className="split-meter">
+                <div
+                  className="split-fill-green"
+                  style={{ width: `${familyPct}%` }}
+                />
+                <div
+                  className="split-fill-gold"
+                  style={{ width: `${savingsPct}%` }}
+                />
+              </div>
+              <div className="flex justify-between text-xs font-bold">
+                <span className="text-emerald-700">Keluarga: {familyPct}%</span>
+                <span className="text-amber-700">Tabungan Emas: {savingsPct}%</span>
+              </div>
+            </div>
+
+            {/* 2 Big Outcome Cards */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
+              <div className="p-4 bg-white rounded-xl border border-emerald-200 shadow-2xs">
+                <p className="text-xs font-semibold text-slate-500">
+                  🏦 Diterima Keluarga ({familyPct}%)
+                </p>
+                <p className="text-xl font-black text-emerald-700 mt-1 font-display">
+                  {formatIDR(familyIDR)}
+                </p>
+                <p className="text-[11px] text-slate-400 mt-0.5">
+                  Sampai utuh via BI-FAST / DANA
+                </p>
+              </div>
+
+              <div className="p-4 bg-white rounded-xl border border-amber-200 shadow-2xs">
+                <p className="text-xs font-semibold text-slate-500">
+                  🪙 Tabungan Emas ({savingsPct}%)
+                </p>
+                <p className="text-xl font-black text-amber-600 mt-1 font-display">
+                  {goldGrams >= 0.001 ? `${goldGrams.toFixed(3)} gram` : formatGold(goldMg)}
+                </p>
+                <p className="text-[11px] text-amber-700 font-bold mt-0.5">
+                  ≈ {formatIDR(goldIDR)} (Emas Fisik 99.99%)
+                </p>
+              </div>
             </div>
           </div>
         )}
 
-        <form onSubmit={handleSubmit} className="space-y-6">
-          {/* Negara Kerja */}
-          <div>
-            <label className="block text-xs font-bold text-slate-600 mb-2">
-              Negara Kerja
-            </label>
-            <div className="country-grid">
-              {SUPPORTED_CURRENCIES.map((c) => {
-                const isSelected = c.code === selectedCurrencyCode;
-                return (
-                  <button
-                    key={c.code}
-                    type="button"
-                    onClick={() => setSelectedCurrencyCode(c.code)}
-                    disabled={isProcessing}
-                    className={`country-btn ${isSelected ? "selected" : ""}`}
-                  >
-                    <FlagIcon code={c.code} className="w-7 h-7" />
-                    <span className="code">{c.code}</span>
-                  </button>
-                );
-              })}
-            </div>
+        {/* Error Alert */}
+        {error && (
+          <div className="p-4 rounded-xl bg-rose-50 border border-rose-200 flex items-start gap-2.5 text-rose-800">
+            <AlertCircle className="w-5 h-5 shrink-0 text-rose-600 mt-0.5" />
+            <span className="text-sm font-medium">{error}</span>
           </div>
+        )}
 
-          {/* Nominal Kiriman */}
-          <div>
-            <div className="flex items-center justify-between mb-1.5">
-              <label
-                htmlFor="remittance-amount"
-                className="text-xs font-bold text-slate-600"
-              >
-                Nominal Kiriman
-              </label>
-              <span className="text-xs font-semibold text-slate-400">
-                1 {currency.code} ≈ {(currency.rateToUSDC * USDC_TO_IDR_RATE).toLocaleString("id-ID")} IDR
-              </span>
-            </div>
-
-            <div className="pundi-input-group">
-              <div className="pundi-input-prefix">
-                {currency.code}
-              </div>
-              <input
-                id="remittance-amount"
-                type="number"
-                min="0"
-                step="any"
-                value={amount}
-                onChange={(e) => setAmount(e.target.value)}
-                placeholder="0"
-                disabled={isProcessing}
-                className="pundi-input-control"
-              />
-            </div>
-
-            <div className="flex items-center gap-1.5 mt-2.5 text-xs text-slate-500 font-medium">
-              <FlagIcon code={currency.code} className="w-4 h-4" />
-              <span>{currency.name}</span>
-            </div>
-          </div>
-
-          {/* Transparent Live Breakdown */}
-          {numAmount > 0 && (
-            <div className="p-5 rounded-2xl bg-slate-50 border border-slate-200/90 space-y-4">
-              <div className="flex items-center justify-between">
-                <span className="text-xs font-bold text-slate-700 flex items-center gap-1.5">
-                  <ShieldCheck className="w-4 h-4 text-emerald-600" />
-                  Estimasi Transparan
-                </span>
-                <span className="text-xs font-semibold text-emerald-700">
-                  Total Biaya: <strong>~1%</strong> (Hemat vs 5-6%)
-                </span>
-              </div>
-
-              {/* Split Bar */}
-              <div>
-                <div className="split-track">
-                  <div
-                    className="split-seg-green"
-                    style={{ width: `${familyPct}%` }}
-                  />
-                  <div
-                    className="split-seg-gold"
-                    style={{ width: `${savingsPct}%` }}
-                  />
-                </div>
-                <div className="flex justify-between text-[11px] font-bold mt-1.5">
-                  <span className="text-emerald-700">Keluarga: {familyPct}%</span>
-                  <span className="text-amber-700">Tabungan Emas: {savingsPct}%</span>
-                </div>
-              </div>
-
-              {/* 2 Result Boxes */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
-                <div className="p-3.5 bg-white rounded-xl border border-emerald-200">
-                  <p className="text-xs font-medium text-slate-500">
-                    🏦 Diterima Keluarga ({familyPct}%)
-                  </p>
-                  <p className="text-xl font-black text-emerald-700 mt-1">
-                    {formatIDR(familyIDR)}
-                  </p>
-                  <p className="text-[11px] text-slate-400 mt-0.5">
-                    Sampai utuh via BI-FAST / DANA
-                  </p>
-                </div>
-
-                <div className="p-3.5 bg-white rounded-xl border border-amber-200">
-                  <p className="text-xs font-medium text-slate-500">
-                    🪙 Tabungan Emas ({savingsPct}%)
-                  </p>
-                  <p className="text-xl font-black text-amber-600 mt-1">
-                    {goldGrams >= 0.001 ? `${goldGrams.toFixed(3)} gram` : formatGold(goldMg)}
-                  </p>
-                  <p className="text-[11px] text-amber-700 font-medium mt-0.5">
-                    ≈ {formatIDR(goldIDR)} (Emas Fisik 99.99%)
-                  </p>
-                </div>
-              </div>
-            </div>
-          )}
-
-          {/* Error Notice */}
-          {error && (
-            <div className="p-4 rounded-xl bg-rose-50 border border-rose-200 flex items-start gap-2.5 text-rose-800">
-              <AlertCircle className="w-5 h-5 shrink-0 text-rose-600 mt-0.5" />
-              <span className="text-sm font-medium">{error}</span>
-            </div>
-          )}
-
-          {/* Big Green Submit Button */}
-          <button
-            type="submit"
-            disabled={isProcessing}
-            className="btn-kirim-pundi"
-          >
-            {isProcessing ? (
-              <>
-                <Loader2 className="w-5 h-5 animate-spin" />
-                <span>Memproses Kiriman...</span>
-              </>
-            ) : (
+        {/* Big Gold Action Button */}
+        <button
+          type="submit"
+          disabled={isProcessing}
+          className="btn-gold-action font-display"
+        >
+          {isProcessing ? (
+            <>
+              <Loader2 className="w-5 h-5 animate-spin" />
+              <span>Memproses Transaksi di Stellar...</span>
+            </>
+          ) : (
+            <>
+              <Send className="w-5 h-5" />
               <span>Kirim Sekarang</span>
-            )}
-          </button>
-
-          {/* Footer note */}
-          <div className="text-center pt-2">
-            <p className="text-xs text-slate-400">
-              Mode Demo / Testnet — Transaksi nyata di blockchain Stellar
-            </p>
-            <p className="text-[11px] text-slate-400 mt-0.5">
-              Anchor fiat (SGD/IDR) & swap XAUm disimulasikan
-            </p>
-          </div>
-        </form>
-      </div>
+            </>
+          )}
+        </button>
+      </form>
     </div>
   );
 }
