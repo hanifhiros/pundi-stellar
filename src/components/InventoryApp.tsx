@@ -32,8 +32,8 @@ type TabKey = "kirim" | "aturan" | "dashboard" | "panduan";
 const TABS: { key: TabKey; label: string; icon: React.ComponentType<{ className?: string }> }[] = [
   { key: "kirim", label: "Kirim Uang", icon: Send },
   { key: "aturan", label: "Aturan Tabungan", icon: Sliders },
-  { key: "dashboard", label: "Brankas & Riwayat", icon: Coins },
-  { key: "panduan", label: "Panduan & FAQ", icon: HelpCircle },
+  { key: "dashboard", label: "Saldo & Riwayat", icon: Coins },
+  { key: "panduan", label: "Bantuan", icon: HelpCircle },
 ];
 
 export function InventoryApp() {
@@ -62,7 +62,7 @@ export function InventoryApp() {
   const goldGrams = Number(totalGoldMg) / 1000;
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-6 sm:space-y-8">
       {/* Wallet Required Notice */}
       <WalletRequiredBanner />
 
@@ -86,6 +86,12 @@ export function InventoryApp() {
           </button>
         </div>
       )}
+
+      <section className="rounded-3xl bg-gradient-to-br from-amber-100 via-amber-50 to-white border border-amber-200 px-6 py-6 sm:px-8 sm:py-7 shadow-sm">
+        <p className="text-sm font-bold text-amber-800">Kirim uang untuk keluarga, sambil menabung sedikit demi sedikit.</p>
+        <h1 className="font-display text-2xl sm:text-3xl font-black text-slate-900 mt-1">Semua bisa dilakukan dengan langkah sederhana.</h1>
+        <p className="text-slate-600 mt-2 max-w-2xl">Pilih menu di bawah. Kami akan menunjukkan dengan jelas berapa uang yang diterima keluarga dan berapa yang menjadi tabungan emas.</p>
+      </section>
 
       {/* Pill Navigation Bar */}
       <div className="flex justify-center my-6">
@@ -112,25 +118,25 @@ export function InventoryApp() {
       <div className="pt-2">
         {/* TAB 1: KIRIM UANG */}
         {activeTab === "kirim" && (
-          <div className="max-w-2xl mx-auto space-y-10">
+          <div className="max-w-2xl mx-auto space-y-6">
             <SendRemittanceForm
               savingsRule={savingsRule}
               onSubmit={sendRemittance}
               loading={actionLoading}
             />
-            <div className="p-8 rounded-[32px] bg-white border border-slate-200/60 shadow-sm space-y-4">
+            <div className="p-6 rounded-3xl bg-white border border-slate-200/60 shadow-sm space-y-3">
               <h3 className="text-base font-bold text-slate-900 font-display flex items-center gap-2">
                 <span>💡</span> Keunggulan Pundi
               </h3>
               <p className="text-base text-slate-600 leading-relaxed font-medium">
-                Remitansi konvensional memotong biaya 5–6.36%. Di Pundi, biaya hanya ~1% di jaringan Stellar, dan selisihnya otomatis menjadi tabungan emas keluarga Anda.
+                Kiriman Anda dibagi sesuai aturan yang dipilih. Keluarga menerima bagian mereka dalam Rupiah, sementara sisanya menjadi tabungan emas.
               </p>
               <button
                 type="button"
                 onClick={() => setActiveTab("panduan")}
                 className="text-base font-bold text-amber-700 hover:underline inline-flex items-center gap-1 mt-2"
               >
-                Pelajari alur cara kerja & FAQ →
+                Lihat cara kerja Pundi →
               </button>
             </div>
           </div>
@@ -138,7 +144,7 @@ export function InventoryApp() {
 
         {/* TAB 2: ATURAN TABUNGAN */}
         {activeTab === "aturan" && (
-          <div className="max-w-2xl mx-auto space-y-10">
+          <div className="max-w-2xl mx-auto space-y-6">
             <SavingsRuleSetup
               existingRule={savingsRule}
               onSave={setRule}
@@ -150,7 +156,7 @@ export function InventoryApp() {
 
         {/* TAB 3: DASHBOARD & RIWAYAT */}
         {activeTab === "dashboard" && (
-          <div className="space-y-10">
+          <div className="space-y-6">
             {/* Hero Stats */}
             {connected && (remittances.length > 0 || Number(totalGoldMg) > 0) && (
               <div className="grid grid-cols-2 sm:grid-cols-3 gap-6">

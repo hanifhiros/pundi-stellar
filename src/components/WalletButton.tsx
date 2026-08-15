@@ -43,7 +43,7 @@ export function WalletButton() {
       ) : (
         <>
           <Zap className="w-4 h-4 fill-current" />
-          <span>Sambung Freighter</span>
+          <span>Sambungkan Akun</span>
         </>
       )}
     </button>

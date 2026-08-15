@@ -113,19 +113,19 @@ export function SendRemittanceForm({
   const isProcessing = loading || sending;
 
   return (
-    <div className="pundi-card-premium space-y-14">
+    <div className="pundi-card-premium space-y-8">
       {/* Card Header */}
-      <div className="flex items-center justify-between pb-10 border-b border-slate-100">
+      <div className="flex items-center justify-between pb-6 border-b border-slate-100">
         <div className="flex items-center gap-6">
-          <div className="w-16 h-16 rounded-[24px] bg-amber-100 border border-amber-300 flex items-center justify-center text-amber-700 shadow-sm">
-            <Send className="w-8 h-8" />
+          <div className="w-13 h-13 rounded-2xl bg-amber-100 border border-amber-300 flex items-center justify-center text-amber-700 shadow-sm">
+            <Send className="w-6 h-6" />
           </div>
           <div>
-            <h2 className="font-display font-black text-4xl text-slate-900 leading-tight tracking-tight">
+            <h2 className="font-display font-black text-2xl sm:text-3xl text-slate-900 leading-tight tracking-tight">
               Kirim Uang
             </h2>
-            <p className="text-lg text-slate-500 mt-2 font-medium">
-              {savingsPct}% otomatis disisihkan jadi tabungan emas keluarga
+            <p className="text-base text-slate-600 mt-1 font-medium">
+              Ikuti 3 langkah mudah. Rincian kiriman terlihat sebelum dikirim.
             </p>
           </div>
         </div>
@@ -187,13 +187,13 @@ export function SendRemittanceForm({
         </div>
       )}
 
-      <form onSubmit={handleSubmit} className="space-y-16">
+      <form onSubmit={handleSubmit} className="space-y-9">
         {/* Negara Kerja */}
         <div>
-          <label className="block text-[15px] font-black uppercase tracking-widest text-slate-400 mb-8">
-            Pilih Negara Kerja
+          <label className="block text-base font-black text-slate-800 mb-4">
+            <span className="inline-flex w-7 h-7 mr-2 items-center justify-center rounded-full bg-amber-600 text-white text-sm">1</span>Pilih negara tempat Anda mengirim dari
           </label>
-          <div className="grid grid-cols-3 sm:grid-cols-5 gap-6">
+          <div className="grid grid-cols-3 sm:grid-cols-5 gap-3">
             {SUPPORTED_CURRENCIES.map((c) => {
               const isSelected = c.code === selectedCurrencyCode;
               return (
@@ -221,19 +221,19 @@ export function SendRemittanceForm({
 
         {/* Nominal Input */}
         <div>
-          <div className="flex items-center justify-between mb-8">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-4">
             <label
               htmlFor="remittance-amount"
-              className="text-[15px] font-black uppercase tracking-widest text-slate-400"
+              className="text-base font-black text-slate-800"
             >
-              Nominal Kiriman ({currency.code})
+              <span className="inline-flex w-7 h-7 mr-2 items-center justify-center rounded-full bg-amber-600 text-white text-sm">2</span>Nominal kiriman ({currency.code})
             </label>
             <span className="text-[15px] font-bold text-slate-400 bg-slate-50 px-4 py-1.5 rounded-xl">
               1 {currency.code} ≈ {(currency.rateToUSDC * USDC_TO_IDR_RATE).toLocaleString("id-ID")} IDR
             </span>
           </div>
 
-          <div className="pundi-input-box h-24 shadow-sm rounded-3xl">
+          <div className="pundi-input-box h-20 sm:h-24 shadow-sm rounded-2xl sm:rounded-3xl">
             <div className="px-8 bg-slate-50 h-full flex items-center gap-4 border-r border-slate-200 shrink-0">
               <FlagIcon code={currency.code} className="w-8 h-8" />
               <span className="font-black text-slate-800 text-2xl">
@@ -255,7 +255,7 @@ export function SendRemittanceForm({
 
           {/* Quick preset chips */}
           <div className="flex items-center gap-4 mt-8 flex-wrap">
-            <span className="text-[15px] text-slate-400 font-bold mr-2 uppercase tracking-widest">Nominal Cepat:</span>
+            <span className="text-sm text-slate-500 font-bold mr-1">Pilih cepat:</span>
             {[200, 500, 1000, 2000].map((val) => (
               <button
                 key={val}
@@ -274,9 +274,9 @@ export function SendRemittanceForm({
         <div>
           <label
             htmlFor="remittance-label"
-            className="block text-[15px] font-black uppercase tracking-widest text-slate-400 mb-8"
+            className="block text-base font-black text-slate-800 mb-4"
           >
-            Keterangan (Opsional)
+            <span className="inline-flex w-7 h-7 mr-2 items-center justify-center rounded-full bg-slate-500 text-white text-sm">3</span>Keterangan (boleh dikosongkan)
           </label>
           <input
             id="remittance-label"
@@ -286,13 +286,13 @@ export function SendRemittanceForm({
             placeholder="misal: Kiriman Bulan Agustus, Sekolah Anak"
             disabled={isProcessing}
             maxLength={32}
-            className="w-full h-20 px-8 border border-slate-200 rounded-3xl text-xl font-medium text-slate-800 outline-none focus:border-amber-500 focus:ring-4 focus:ring-amber-500/10 transition-all bg-white shadow-sm"
+            className="w-full h-16 px-5 border border-slate-200 rounded-2xl text-lg font-medium text-slate-800 outline-none focus:border-amber-500 focus:ring-4 focus:ring-amber-500/10 transition-all bg-white shadow-sm"
           />
         </div>
 
         {/* Transparent Live Breakdown */}
         {numAmount > 0 && (
-          <div className="p-10 rounded-[32px] bg-gradient-to-br from-amber-50/80 via-slate-50 to-emerald-50/60 border border-amber-200/80 space-y-10 shadow-sm mt-4">
+          <div className="p-6 sm:p-8 rounded-3xl bg-gradient-to-br from-amber-50/80 via-slate-50 to-emerald-50/60 border border-amber-200/80 space-y-6 shadow-sm mt-4">
             <div className="flex items-center justify-between">
               <span className="text-[15px] font-black text-amber-900 flex items-center gap-3 uppercase tracking-widest">
                 <ShieldCheck className="w-7 h-7 text-amber-600" />

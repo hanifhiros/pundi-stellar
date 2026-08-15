@@ -32,7 +32,7 @@ export default function RootLayout({
         <AppProviders>
           {/* ── Top Header ── */}
           <header className="pundi-header">
-            <div className="max-w-5xl mx-auto px-6 h-20 flex items-center justify-between">
+            <div className="max-w-5xl mx-auto px-4 sm:px-6 h-18 sm:h-20 flex items-center justify-between">
               {/* Brand */}
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 rounded-2xl bg-gradient-to-br from-amber-400 to-amber-600 flex items-center justify-center text-xl shadow-sm">
@@ -43,8 +43,8 @@ export default function RootLayout({
                     <span className="font-display font-extrabold text-2xl text-slate-900 tracking-tight">
                       Pundi
                     </span>
-                    <span className="text-[11px] font-bold px-2 py-0.5 rounded-full bg-indigo-50 text-indigo-700 border border-indigo-200">
-                      testnet
+                    <span className="hidden sm:inline text-[11px] font-bold px-2 py-0.5 rounded-full bg-indigo-50 text-indigo-700 border border-indigo-200">
+                      mode percobaan
                     </span>
                   </div>
                   <p className="text-xs text-slate-500 font-medium">
@@ -68,8 +68,8 @@ export default function RootLayout({
           {/* ── Footer ── */}
           <footer className="border-t border-slate-200 bg-white py-8 text-center">
             <div className="max-w-5xl mx-auto px-6 space-y-2">
-              <p className="text-xs text-slate-500 font-medium">
-                Emas XAUm dikelola oleh{" "}
+            <p className="text-xs text-slate-500 font-medium">
+                Tabungan emas didukung oleh{" "}
                 <a
                   href="https://www.matrixdock.com/products/xaum"
                   target="_blank"
@@ -81,7 +81,7 @@ export default function RootLayout({
                 · Fisik LBMA 99.99% · Diaudit berkala oleh Bureau Veritas
               </p>
               <p className="text-[11px] text-slate-400">
-                Ditenagai oleh Stellar Soroban Smart Contract · Settle kilat ~5 detik
+                Pundi membantu kiriman keluarga dan tabungan emas berjalan beriringan
               </p>
             </div>
           </footer>

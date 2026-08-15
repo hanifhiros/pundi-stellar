@@ -16,10 +16,10 @@ export function WalletRequiredBanner() {
         </div>
         <div>
           <h3 className="text-sm font-bold text-amber-950 font-display">
-            Sambungkan Freighter untuk Mengirim & Menabung
+            Sambungkan akun untuk mulai mengirim
           </h3>
           <p className="text-xs text-amber-900/80 mt-0.5 font-medium">
-            Semua transaksi dieksekusi secara instan dan aman di Stellar Soroban Testnet.
+            Cukup satu kali penyambungan. Setelah itu, Anda dapat mengirim uang dan melihat tabungan emas dengan aman.
           </p>
         </div>
       </div>
@@ -31,7 +31,7 @@ export function WalletRequiredBanner() {
         className="btn-banner-primary"
       >
         <Zap className="w-4 h-4 fill-current" />
-        <span>Sambung Sekarang</span>
+        <span>Sambungkan Akun</span>
       </button>
     </div>
   );
