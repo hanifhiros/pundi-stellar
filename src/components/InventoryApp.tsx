@@ -153,57 +153,39 @@ export function InventoryApp() {
       <div className="pt-2">
         {/* TAB 1: KIRIM UANG */}
         {activeTab === "kirim" && (
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-            <div className="lg:col-span-7">
-              <SendRemittanceForm
-                savingsRule={savingsRule}
-                onSubmit={sendRemittance}
-                loading={actionLoading}
-              />
-            </div>
-            <div className="lg:col-span-5 space-y-6">
-              <GoldVaultCard
-                totalGoldMg={totalGoldMg}
-                remittanceCount={remittances.length}
-                goalLabel={savingsRule?.label}
-              />
-              <div className="p-6 rounded-2xl bg-white border border-slate-200/90 shadow-card space-y-3">
-                <h3 className="text-sm font-bold text-slate-900 font-display flex items-center gap-2">
-                  <span>💡</span> Keunggulan Pundi
-                </h3>
-                <p className="text-xs text-slate-600 leading-relaxed font-medium">
-                  Remitansi konvensional memotong biaya 5–6.36%. Di Pundi, biaya hanya ~1% di jaringan Stellar, dan selisihnya otomatis menjadi tabungan emas keluarga Anda.
-                </p>
-                <button
-                  type="button"
-                  onClick={() => setActiveTab("panduan")}
-                  className="text-xs font-bold text-amber-700 hover:underline inline-flex items-center gap-1"
-                >
-                  Pelajari alur cara kerja & FAQ →
-                </button>
-              </div>
+          <div className="max-w-2xl mx-auto space-y-8">
+            <SendRemittanceForm
+              savingsRule={savingsRule}
+              onSubmit={sendRemittance}
+              loading={actionLoading}
+            />
+            <div className="p-6 rounded-3xl bg-white border border-slate-200/60 shadow-sm space-y-3">
+              <h3 className="text-sm font-bold text-slate-900 font-display flex items-center gap-2">
+                <span>💡</span> Keunggulan Pundi
+              </h3>
+              <p className="text-sm text-slate-600 leading-relaxed font-medium">
+                Remitansi konvensional memotong biaya 5–6.36%. Di Pundi, biaya hanya ~1% di jaringan Stellar, dan selisihnya otomatis menjadi tabungan emas keluarga Anda.
+              </p>
+              <button
+                type="button"
+                onClick={() => setActiveTab("panduan")}
+                className="text-sm font-bold text-amber-700 hover:underline inline-flex items-center gap-1 mt-1"
+              >
+                Pelajari alur cara kerja & FAQ →
+              </button>
             </div>
           </div>
         )}
 
         {/* TAB 2: ATURAN TABUNGAN */}
         {activeTab === "aturan" && (
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-            <div className="lg:col-span-7">
-              <SavingsRuleSetup
-                existingRule={savingsRule}
-                onSave={setRule}
-                loading={actionLoading}
-                totalGoldMg={totalGoldMg}
-              />
-            </div>
-            <div className="lg:col-span-5 space-y-6">
-              <GoldVaultCard
-                totalGoldMg={totalGoldMg}
-                remittanceCount={remittances.length}
-                goalLabel={savingsRule?.label}
-              />
-            </div>
+          <div className="max-w-2xl mx-auto space-y-8">
+            <SavingsRuleSetup
+              existingRule={savingsRule}
+              onSave={setRule}
+              loading={actionLoading}
+              totalGoldMg={totalGoldMg}
+            />
           </div>
         )}
 
