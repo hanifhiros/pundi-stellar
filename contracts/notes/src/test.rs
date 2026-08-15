@@ -1,7 +1,7 @@
 #![cfg(test)]
 
 use super::*;
-use soroban_sdk::{Address, Env, String};
+use soroban_sdk::{testutils::Address as _, Address, Env, String};
 
 // Helper: buat env + client untuk SavingsVaultContract
 fn setup() -> (Env, SavingsVaultContractClient<'static>) {
@@ -57,11 +57,17 @@ fn set_savings_rule_rejects_out_of_range() {
 
     // bps 100 = 1%, terlalu kecil (minimum 500 = 5%)
     let result_low = client.set_savings_rule(&user, &label, &100u32);
-    assert!(result_low.to_string().contains("500"));
+    assert_eq!(
+        result_low,
+        String::from_str(&env, "savings_bps harus antara 500 (5%) dan 2000 (20%)")
+    );
 
     // bps 5000 = 50%, terlalu besar (maksimum 2000 = 20%)
     let result_high = client.set_savings_rule(&user, &label, &5000u32);
-    assert!(result_high.to_string().contains("2000"));
+    assert_eq!(
+        result_high,
+        String::from_str(&env, "savings_bps harus antara 500 (5%) dan 2000 (20%)")
+    );
 }
 
 // ============================================================

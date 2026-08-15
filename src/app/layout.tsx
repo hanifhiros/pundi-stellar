@@ -43,9 +43,6 @@ export default function RootLayout({
                     <span className="font-display font-extrabold text-2xl text-slate-900 tracking-tight">
                       Pundi
                     </span>
-                    <span className="hidden sm:inline text-[11px] font-bold px-2 py-0.5 rounded-full bg-indigo-50 text-indigo-700 border border-indigo-200">
-                      mode percobaan
-                    </span>
                   </div>
                   <p className="text-xs text-slate-500 font-medium">
                     Kirim · Tabung · Tumbuh
@@ -68,20 +65,20 @@ export default function RootLayout({
           {/* ── Footer ── */}
           <footer className="border-t border-slate-200 bg-white py-8 text-center">
             <div className="max-w-5xl mx-auto px-6 space-y-2">
-            <p className="text-xs text-slate-500 font-medium">
-                Tabungan emas didukung oleh{" "}
+              <p className="text-xs text-slate-500 font-medium">
+                Emas XAUm dikelola oleh{" "}
                 <a
                   href="https://www.matrixdock.com/products/xaum"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-amber-600 font-bold hover:underline"
+                  className="text-amber-600 font-bold hover:underline focus-visible:ring-2 focus-visible:ring-amber-500 rounded"
                 >
                   Matrixdock
                 </a>{" "}
-                · Fisik LBMA 99.99% · Diaudit berkala oleh Bureau Veritas
+                · Fisik LBMA 99.99% · Aman & Terverifikasi
               </p>
               <p className="text-[11px] text-slate-400">
-                Pundi membantu kiriman keluarga dan tabungan emas berjalan beriringan
+                Uang sampai seketika · Tabungan otomatis tersimpan dengan aman
               </p>
             </div>
           </footer>

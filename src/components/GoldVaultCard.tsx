@@ -207,9 +207,9 @@ export function GoldVaultCard({
             href={getStellarExpertContractUrl()}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-1 text-slate-500 font-bold hover:underline"
+            className="inline-flex items-center gap-1 text-slate-500 font-bold hover:underline focus-visible:ring-2 focus-visible:ring-slate-500 rounded"
           >
-            <span>Smart Contract di Stellar</span>
+            <span>Cek Catatan Aman</span>
             <ExternalLink className="w-3.5 h-3.5" />
           </a>
         </div>

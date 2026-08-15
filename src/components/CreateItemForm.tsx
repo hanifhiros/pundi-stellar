@@ -116,84 +116,76 @@ export function SendRemittanceForm({
     <div className="pundi-card-premium space-y-8">
       {/* Card Header */}
       <div className="flex items-center justify-between pb-6 border-b border-slate-100">
-        <div className="flex items-center gap-6">
-          <div className="w-13 h-13 rounded-2xl bg-amber-100 border border-amber-300 flex items-center justify-center text-amber-700 shadow-sm">
+        <div className="flex items-center gap-4">
+          <div className="w-12 h-12 rounded-xl bg-amber-100 border border-amber-300 flex items-center justify-center text-amber-700 shadow-sm">
             <Send className="w-6 h-6" />
           </div>
           <div>
-            <h2 className="font-display font-black text-2xl sm:text-3xl text-slate-900 leading-tight tracking-tight">
+            <h2 className="font-display font-black text-2xl text-slate-900 leading-tight">
               Kirim Uang
             </h2>
-            <p className="text-base text-slate-600 mt-1 font-medium">
-              Ikuti 3 langkah mudah. Rincian kiriman terlihat sebelum dikirim.
+            <p className="text-sm text-slate-500 mt-1 font-medium">
+              Sebagian otomatis menjadi tabungan emas keluarga
             </p>
           </div>
         </div>
-        <span className="badge-green-subtle hidden sm:inline-flex px-5 py-2.5 text-sm font-bold shadow-sm">
-          <Zap className="w-5 h-5" /> Selesai ~5 detik
+        <span className="badge-green-subtle hidden sm:inline-flex px-4 py-2 text-sm font-bold shadow-sm">
+          <Zap className="w-4 h-4" /> Sampai Seketika
         </span>
       </div>
 
       {/* Success Receipt Modal */}
       {lastTxSuccess && (
-        <div className="p-10 rounded-3xl bg-emerald-50 border border-emerald-300 space-y-8 animate-in fade-in shadow-sm">
-          <div className="flex items-center gap-6 text-emerald-900">
-            <CheckCircle2 className="w-12 h-12 text-emerald-600 shrink-0" />
+        <div className="p-6 rounded-2xl bg-emerald-50 border border-emerald-300 space-y-6 animate-in fade-in shadow-sm">
+          <div className="flex items-center gap-4 text-emerald-900">
+            <CheckCircle2 className="w-10 h-10 text-emerald-600 shrink-0" />
             <div>
-              <h3 className="font-black text-2xl text-emerald-950 tracking-tight">
-                Kiriman Berhasil Terkirim!
+              <h3 className="font-black text-xl text-emerald-950">
+                Uang Berhasil Terkirim!
               </h3>
-              <p className="text-lg text-emerald-700 mt-1.5 font-medium">
-                Transaksi telah dieksekusi secara atomik di Stellar Soroban Testnet.
+              <p className="text-sm text-emerald-700 mt-1 font-medium">
+                Keluarga Anda telah menerima dana, dan tabungan emas sudah tercatat dengan aman.
               </p>
             </div>
           </div>
 
-          <div className="grid grid-cols-2 gap-6 pt-4">
-            <div className="p-8 bg-white rounded-3xl border border-emerald-200 shadow-sm">
-              <p className="text-sm text-slate-500 font-bold tracking-widest uppercase mb-1">Diterima Keluarga</p>
-              <p className="text-3xl font-black text-emerald-700 mt-2 font-display">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
+            <div className="p-5 bg-white rounded-xl border border-emerald-200 shadow-sm">
+              <p className="text-xs text-slate-500 font-bold tracking-wide uppercase mb-1">Diterima Keluarga</p>
+              <p className="text-2xl font-black text-emerald-700 mt-1 font-display">
                 {formatIDR(lastTxSuccess.familyIDR)}
               </p>
-              <p className="text-base text-slate-400 mt-2 font-medium">via BI-FAST / DANA</p>
+              <p className="text-xs text-slate-400 mt-1.5 font-medium">Masuk ke rekening tujuan</p>
             </div>
-            <div className="p-8 bg-white rounded-3xl border border-amber-200 shadow-sm">
-              <p className="text-sm text-slate-500 font-bold tracking-widest uppercase mb-1">Tabungan Emas</p>
-              <p className="text-3xl font-black text-amber-600 mt-2 font-display">
+            <div className="p-5 bg-white rounded-xl border border-amber-200 shadow-sm">
+              <p className="text-xs text-slate-500 font-bold tracking-wide uppercase mb-1">Tabungan Emas Fisik</p>
+              <p className="text-2xl font-black text-amber-600 mt-1 font-display">
                 +{lastTxSuccess.goldGrams.toFixed(3)} gr
               </p>
-              <p className="text-base text-slate-400 mt-2 font-medium">Tujuan: {lastTxSuccess.label}</p>
+              <p className="text-xs text-slate-400 mt-1.5 font-medium">Tujuan: {lastTxSuccess.label}</p>
             </div>
           </div>
 
-          <div className="pt-6 flex items-center justify-between border-t border-emerald-200/70">
-            <a
-              href={getStellarExpertContractUrl()}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2.5 text-base font-bold text-emerald-800 hover:text-emerald-600 transition-colors"
-            >
-              <span>Cek Bukti di Stellar Expert</span>
-              <ExternalLink className="w-5 h-5" />
-            </a>
+          <div className="pt-4 flex items-center justify-between border-t border-emerald-200/70">
             <button
               type="button"
               onClick={() => setLastTxSuccess(null)}
-              className="text-base text-emerald-700 font-bold hover:text-emerald-900 transition-colors px-6 py-2.5 rounded-xl hover:bg-emerald-100"
+              className="text-sm text-emerald-700 font-bold hover:text-emerald-900 transition-colors px-4 py-2 rounded-lg hover:bg-emerald-100 focus-visible:ring-2 focus-visible:ring-emerald-500 w-full sm:w-auto text-center"
             >
-              Tutup
+              Kirim Lagi
             </button>
           </div>
         </div>
       )}
 
-      <form onSubmit={handleSubmit} className="space-y-9">
-        {/* Negara Kerja */}
+      <form onSubmit={handleSubmit} className="space-y-10">
+        {/* 1. Negara Kerja */}
         <div>
-          <label className="block text-base font-black text-slate-800 mb-4">
-            <span className="inline-flex w-7 h-7 mr-2 items-center justify-center rounded-full bg-amber-600 text-white text-sm">1</span>Pilih negara tempat Anda mengirim dari
+          <label className="block text-sm font-bold uppercase tracking-wider text-slate-500 mb-4 flex items-center gap-2">
+            <span className="w-6 h-6 rounded-full bg-slate-100 text-slate-600 flex items-center justify-center text-xs">1</span>
+            Pilih Negara Kerja
           </label>
-          <div className="grid grid-cols-3 sm:grid-cols-5 gap-3">
+          <div className="grid grid-cols-2 sm:grid-cols-5 gap-3">
             {SUPPORTED_CURRENCIES.map((c) => {
               const isSelected = c.code === selectedCurrencyCode;
               return (
@@ -202,14 +194,14 @@ export function SendRemittanceForm({
                   type="button"
                   onClick={() => setSelectedCurrencyCode(c.code)}
                   disabled={isProcessing}
-                  className={`country-chip ${isSelected ? "active" : ""}`}
+                  className={`country-chip focus-visible:ring-2 focus-visible:ring-amber-500 focus-visible:outline-none ${isSelected ? "active" : ""}`}
                 >
-                  <FlagIcon code={c.code} className="w-9 h-9 mb-2" />
-                  <div className="text-center min-w-0">
-                    <p className="text-base font-black text-slate-900 leading-tight">
+                  <FlagIcon code={c.code} className="w-7 h-7 mb-1" />
+                  <div className="text-center min-w-0 w-full">
+                    <p className="text-sm font-black text-slate-900 leading-tight">
                       {c.code}
                     </p>
-                    <p className="text-[13px] text-slate-500 truncate mt-1.5 font-medium">
+                    <p className="text-xs text-slate-500 truncate mt-0.5 font-medium">
                       {c.country}
                     </p>
                   </div>
@@ -219,24 +211,25 @@ export function SendRemittanceForm({
           </div>
         </div>
 
-        {/* Nominal Input */}
+        {/* 2. Nominal Input */}
         <div>
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-4">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-4 gap-2">
             <label
               htmlFor="remittance-amount"
-              className="text-base font-black text-slate-800"
+              className="text-sm font-bold uppercase tracking-wider text-slate-500 flex items-center gap-2"
             >
-              <span className="inline-flex w-7 h-7 mr-2 items-center justify-center rounded-full bg-amber-600 text-white text-sm">2</span>Nominal kiriman ({currency.code})
+              <span className="w-6 h-6 rounded-full bg-slate-100 text-slate-600 flex items-center justify-center text-xs shrink-0">2</span>
+              Nominal Kiriman ({currency.code})
             </label>
-            <span className="text-[15px] font-bold text-slate-400 bg-slate-50 px-4 py-1.5 rounded-xl">
+            <span className="text-xs font-bold text-slate-500 bg-slate-100 px-3 py-1.5 rounded-lg w-fit">
               1 {currency.code} ≈ {(currency.rateToUSDC * USDC_TO_IDR_RATE).toLocaleString("id-ID")} IDR
             </span>
           </div>
 
-          <div className="pundi-input-box h-20 sm:h-24 shadow-sm rounded-2xl sm:rounded-3xl">
-            <div className="px-8 bg-slate-50 h-full flex items-center gap-4 border-r border-slate-200 shrink-0">
-              <FlagIcon code={currency.code} className="w-8 h-8" />
-              <span className="font-black text-slate-800 text-2xl">
+          <div className="pundi-input-box h-16 shadow-sm rounded-2xl flex items-center focus-within:ring-2 focus-within:ring-amber-500 focus-within:border-amber-500 overflow-hidden">
+            <div className="px-5 bg-slate-50 h-full flex items-center gap-3 border-r border-slate-200 shrink-0">
+              <FlagIcon code={currency.code} className="w-6 h-6" />
+              <span className="font-black text-slate-800 text-xl">
                 {currency.code}
               </span>
             </div>
@@ -249,34 +242,35 @@ export function SendRemittanceForm({
               onChange={(e) => setAmount(e.target.value)}
               placeholder="0"
               disabled={isProcessing}
-              className="w-full h-full px-8 text-5xl font-black text-slate-900 bg-transparent outline-none font-display placeholder:text-slate-300"
+              className="w-full h-full px-5 text-3xl font-black text-slate-900 bg-transparent outline-none font-display placeholder:text-slate-300"
             />
           </div>
 
           {/* Quick preset chips */}
-          <div className="flex items-center gap-4 mt-8 flex-wrap">
-            <span className="text-sm text-slate-500 font-bold mr-1">Pilih cepat:</span>
+          <div className="flex items-center gap-2 mt-4 flex-wrap">
+            <span className="text-xs text-slate-400 font-bold mr-1 uppercase tracking-wide">Pilih Cepat:</span>
             {[200, 500, 1000, 2000].map((val) => (
               <button
                 key={val}
                 type="button"
                 onClick={() => setAmount(val.toString())}
                 disabled={isProcessing}
-                className="px-6 py-2.5 rounded-2xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-[15px] font-bold transition-colors"
+                className="px-4 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 focus-visible:ring-2 focus-visible:ring-slate-400 focus-visible:outline-none text-slate-700 text-sm font-bold transition-colors"
               >
-                {val} {currency.code}
+                {val}
               </button>
             ))}
           </div>
         </div>
 
-        {/* Keterangan */}
+        {/* 3. Keterangan */}
         <div>
           <label
             htmlFor="remittance-label"
-            className="block text-base font-black text-slate-800 mb-4"
+            className="block text-sm font-bold uppercase tracking-wider text-slate-500 mb-4 flex items-center gap-2"
           >
-            <span className="inline-flex w-7 h-7 mr-2 items-center justify-center rounded-full bg-slate-500 text-white text-sm">3</span>Keterangan (boleh dikosongkan)
+            <span className="w-6 h-6 rounded-full bg-slate-100 text-slate-600 flex items-center justify-center text-xs">3</span>
+            Keterangan (Opsional)
           </label>
           <input
             id="remittance-label"
@@ -286,64 +280,66 @@ export function SendRemittanceForm({
             placeholder="misal: Kiriman Bulan Agustus, Sekolah Anak"
             disabled={isProcessing}
             maxLength={32}
-            className="w-full h-16 px-5 border border-slate-200 rounded-2xl text-lg font-medium text-slate-800 outline-none focus:border-amber-500 focus:ring-4 focus:ring-amber-500/10 transition-all bg-white shadow-sm"
+            className="w-full h-14 px-5 border border-slate-200 rounded-2xl text-base font-medium text-slate-800 outline-none focus:border-amber-500 focus:ring-2 focus:ring-amber-500 transition-all bg-white shadow-sm"
           />
         </div>
 
         {/* Transparent Live Breakdown */}
         {numAmount > 0 && (
-          <div className="p-6 sm:p-8 rounded-3xl bg-gradient-to-br from-amber-50/80 via-slate-50 to-emerald-50/60 border border-amber-200/80 space-y-6 shadow-sm mt-4">
+          <div className="p-6 sm:p-8 rounded-[24px] bg-slate-50 border border-slate-200/80 space-y-6 shadow-sm mt-2 animate-in fade-in">
             <div className="flex items-center justify-between">
-              <span className="text-[15px] font-black text-amber-900 flex items-center gap-3 uppercase tracking-widest">
-                <ShieldCheck className="w-7 h-7 text-amber-600" />
-                Estimasi Transparan
+              <span className="text-sm font-black text-slate-700 flex items-center gap-2 uppercase tracking-wide">
+                <ShieldCheck className="w-5 h-5 text-emerald-600" />
+                Rincian Kiriman
               </span>
-              <span className="text-[15px] font-bold text-emerald-800 bg-emerald-100/50 px-5 py-2 rounded-xl border border-emerald-200/50">
-                Total Biaya: <strong className="text-emerald-900 text-lg">~1%</strong> (Hemat vs 5-6%)
+              <span className="text-xs font-bold text-emerald-800 bg-emerald-100/50 px-3 py-1.5 rounded-lg border border-emerald-200/50">
+                Biaya Sangat Murah (~1%)
               </span>
             </div>
 
             {/* Split Meter Bar */}
-            <div className="space-y-4">
-              <div className="split-meter h-5 shadow-inner">
+            <div className="space-y-3">
+              <div className="split-meter h-3 shadow-inner bg-slate-200 rounded-full overflow-hidden flex">
                 <div
-                  className="split-fill-green"
+                  className="bg-emerald-500 h-full"
                   style={{ width: `${familyPct}%` }}
                 />
                 <div
-                  className="split-fill-gold"
+                  className="bg-amber-400 h-full"
                   style={{ width: `${savingsPct}%` }}
                 />
               </div>
-              <div className="flex justify-between text-base font-black uppercase tracking-widest">
-                <span className="text-emerald-700">Keluarga: {familyPct}%</span>
-                <span className="text-amber-700">Tabungan Emas: {savingsPct}%</span>
+              <div className="flex justify-between text-xs font-bold uppercase tracking-wider">
+                <span className="text-emerald-700">Diterima: {familyPct}%</span>
+                <span className="text-amber-700">Ditabung: {savingsPct}%</span>
               </div>
             </div>
 
             {/* 2 Big Outcome Cards */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 pt-2">
-              <div className="p-8 bg-white rounded-3xl border border-emerald-200 shadow-sm">
-                <p className="text-[15px] font-bold text-slate-400 tracking-widest uppercase mb-1">
-                  🏦 Diterima Keluarga ({familyPct}%)
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-1">
+              <div className="p-5 bg-white rounded-2xl border border-emerald-200 shadow-sm relative overflow-hidden">
+                <div className="absolute top-0 left-0 w-1 h-full bg-emerald-500" />
+                <p className="text-xs font-bold text-slate-500 tracking-wider uppercase mb-1">
+                  Uang Untuk Keluarga
                 </p>
-                <p className="text-3xl font-black text-emerald-700 mt-3 font-display">
+                <p className="text-2xl font-black text-emerald-700 mt-2 font-display">
                   {formatIDR(familyIDR)}
                 </p>
-                <p className="text-base text-slate-400 mt-2 font-medium">
-                  Sampai utuh via BI-FAST / DANA
+                <p className="text-xs text-slate-500 mt-1.5 font-medium">
+                  Utuh masuk rekening via BI-FAST / DANA
                 </p>
               </div>
 
-              <div className="p-8 bg-white rounded-3xl border border-amber-200 shadow-sm">
-                <p className="text-[15px] font-bold text-slate-400 tracking-widest uppercase mb-1">
-                  🪙 Tabungan Emas ({savingsPct}%)
+              <div className="p-5 bg-white rounded-2xl border border-amber-200 shadow-sm relative overflow-hidden">
+                <div className="absolute top-0 left-0 w-1 h-full bg-amber-400" />
+                <p className="text-xs font-bold text-slate-500 tracking-wider uppercase mb-1">
+                  Tabungan Emas Murni
                 </p>
-                <p className="text-3xl font-black text-amber-600 mt-3 font-display">
+                <p className="text-2xl font-black text-amber-600 mt-2 font-display">
                   {goldGrams >= 0.001 ? `${goldGrams.toFixed(3)} gram` : formatGold(goldMg)}
                 </p>
-                <p className="text-base text-amber-700 font-bold mt-2 bg-amber-50 inline-block px-3 py-1 rounded-xl">
-                  ≈ {formatIDR(goldIDR)} (Emas Fisik 99.99%)
+                <p className="text-xs text-slate-500 mt-1.5 font-medium">
+                  Pundi menyimpan otomatis (≈ {formatIDR(goldIDR)})
                 </p>
               </div>
             </div>

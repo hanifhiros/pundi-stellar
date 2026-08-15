@@ -106,8 +106,8 @@ export function SavingsRuleSetup({
           </div>
         </div>
         {existingRule && (
-          <span className="badge-gold-subtle">
-            <Sparkles className="w-3.5 h-3.5" /> Aktif On-Chain
+          <span className="text-xs font-bold px-3 py-1 bg-amber-100 text-amber-800 rounded-full flex items-center gap-1.5 shadow-sm">
+            <Sparkles className="w-3.5 h-3.5" /> Sedang Berjalan
           </span>
         )}
       </div>
@@ -118,7 +118,7 @@ export function SavingsRuleSetup({
           <CheckCircle2 className="w-6 h-6 text-emerald-600 shrink-0" />
           <div>
             <p className="text-sm font-bold text-emerald-950">
-              Aturan Tabungan Berhasil Disimpan di Soroban!
+              Aturan Tabungan Berhasil Disimpan!
             </p>
             <p className="text-xs text-emerald-700 mt-0.5">
               {currentPercent}% dari setiap kiriman akan otomatis disisihkan untuk "{useCustom ? customLabel : selectedLabel}".
@@ -129,9 +129,9 @@ export function SavingsRuleSetup({
 
       {/* Existing Rule Notice */}
       {existingRule && !saved && (
-        <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200/90 flex items-center justify-between">
+        <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200/90 flex items-center justify-between shadow-sm">
           <div className="space-y-0.5">
-            <p className="text-xs text-slate-400 font-semibold uppercase tracking-wider">
+            <p className="text-xs text-slate-400 font-bold uppercase tracking-wider">
               Aturan yang Sedang Berjalan:
             </p>
             <p className="text-sm font-bold text-slate-800">
@@ -139,8 +139,8 @@ export function SavingsRuleSetup({
               <span className="text-amber-600 font-extrabold">{existingRule.label}</span>
             </p>
           </div>
-          <span className="text-xs font-bold text-slate-600 bg-white border border-slate-200 px-3 py-1 rounded-full shadow-2xs">
-            Soroban
+          <span className="text-xs font-bold text-emerald-700 bg-emerald-50 border border-emerald-200 px-3 py-1 rounded-full shadow-sm flex items-center gap-1">
+            <Shield className="w-3.5 h-3.5" /> Aktif
           </span>
         </div>
       )}
@@ -164,9 +164,9 @@ export function SavingsRuleSetup({
                     setUseCustom(false);
                   }}
                   disabled={loading}
-                  className={`flex items-center gap-2.5 p-3 rounded-2xl border text-left transition-all ${
+                  className={`flex items-center gap-2.5 p-3 rounded-2xl border text-left transition-all focus-visible:ring-2 focus-visible:ring-amber-500 focus-visible:outline-none ${
                     isSelected
-                      ? "bg-amber-50/80 border-amber-400 ring-2 ring-amber-400/20 text-amber-950 font-bold"
+                      ? "bg-amber-50 border-amber-400 ring-1 ring-amber-400 text-amber-950 font-bold shadow-sm"
                       : "bg-white border-slate-200 hover:bg-slate-50 text-slate-700 font-medium"
                   }`}
                 >
@@ -187,7 +187,7 @@ export function SavingsRuleSetup({
               type="button"
               onClick={() => setUseCustom(!useCustom)}
               disabled={loading}
-              className="text-xs font-bold text-amber-700 hover:underline inline-flex items-center gap-1"
+              className="text-xs font-bold text-amber-700 hover:underline inline-flex items-center gap-1 focus-visible:ring-2 focus-visible:ring-amber-500 rounded"
             >
               ✏️ {useCustom ? "Pilih dari daftar di atas" : "Tulis tujuan sendiri"}
             </button>
@@ -199,7 +199,7 @@ export function SavingsRuleSetup({
                 placeholder="Contoh: Modal Usaha Warung"
                 disabled={loading}
                 maxLength={32}
-                className="w-full h-12 px-4 border border-slate-200 rounded-xl text-sm font-bold text-slate-800 outline-none focus:border-amber-500 mt-2 bg-white"
+                className="w-full h-12 px-4 border border-slate-200 rounded-xl text-sm font-bold text-slate-800 outline-none focus:border-amber-500 focus:ring-2 focus:ring-amber-500 mt-2 bg-white"
               />
             )}
           </div>
@@ -219,9 +219,9 @@ export function SavingsRuleSetup({
                   type="button"
                   onClick={() => setSavingsBps(p.pct * 100)}
                   disabled={loading}
-                  className={`p-3.5 rounded-2xl border text-left transition-all relative ${
+                  className={`p-3.5 rounded-2xl border text-left transition-all relative focus-visible:ring-2 focus-visible:ring-amber-500 focus-visible:outline-none ${
                     isSelected
-                      ? "bg-amber-50/90 border-amber-400 ring-2 ring-amber-400/20"
+                      ? "bg-amber-50 border-amber-400 ring-1 ring-amber-400 shadow-sm"
                       : "bg-white border-slate-200 hover:bg-slate-50 text-slate-700"
                   }`}
                 >
@@ -249,7 +249,7 @@ export function SavingsRuleSetup({
         </div>
 
         {/* Tips Box */}
-        <div className="p-4 rounded-2xl bg-amber-50/60 border border-amber-200/80 text-xs text-amber-900/90 leading-relaxed">
+        <div className="p-4 rounded-2xl bg-amber-50/60 border border-amber-200/80 text-xs text-amber-900/90 leading-relaxed shadow-sm">
           💡 <strong>Tips Pundi:</strong> Mengatur 10% adalah angka ideal. Uang yang terkirim ke keluarga tetap 90% (hampir tidak terasa bedanya), namun tabungan emas keluarga akan terkumpul stabil dari bulan ke bulan.
         </div>
 
@@ -265,12 +265,12 @@ export function SavingsRuleSetup({
         <button
           type="submit"
           disabled={loading}
-          className="btn-gold-action font-display"
+          className="btn-gold-action focus-visible:ring-2 focus-visible:ring-amber-500 focus-visible:outline-none focus-visible:ring-offset-2"
         >
           {loading ? (
             <>
               <Loader2 className="w-5 h-5 animate-spin" />
-              <span>Menyimpan ke Soroban Smart Contract...</span>
+              <span>Menyimpan Aturan...</span>
             </>
           ) : (
             <span>

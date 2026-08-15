@@ -43,7 +43,7 @@ export function RemittanceHistory({
               Riwayat Transaksi
             </h2>
             <p className="text-xs text-slate-500 mt-0.5">
-              Tercatat langsung di Soroban Smart Contract & terverifikasi on-chain
+              Tercatat secara permanen, transparan, dan tidak dapat diubah
             </p>
           </div>
         </div>
@@ -74,7 +74,7 @@ export function RemittanceHistory({
           <div>
             <p className="text-base font-bold text-slate-800">Belum Ada Transaksi</p>
             <p className="text-xs text-slate-500 max-w-sm mx-auto mt-1">
-              Setiap kali Anda mengirim uang, bukti transaksi on-chain akan muncul di sini lengkap dengan rincian Rupiah keluarga dan gram emas.
+              Setiap kali Anda mengirim uang, bukti transaksi yang aman akan muncul di sini lengkap dengan rincian Rupiah keluarga dan gram emas.
             </p>
           </div>
         </div>
@@ -155,9 +155,9 @@ export function RemittanceHistory({
                     href={getStellarExpertContractUrl()}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center gap-1 text-[11px] font-bold text-slate-500 hover:text-amber-700 hover:underline"
+                    className="inline-flex items-center gap-1 text-[11px] font-bold text-slate-500 hover:text-amber-700 hover:underline focus-visible:ring-2 focus-visible:ring-amber-500 rounded"
                   >
-                    <span>Verifikasi Bukti di Stellar Expert</span>
+                    <span>Lihat Bukti Transaksi</span>
                     <ExternalLink className="w-3 h-3" />
                   </a>
                 </div>
@@ -169,9 +169,9 @@ export function RemittanceHistory({
 
       {sorted.length > 0 && !loading && (
         <div className="pt-3 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500 font-medium">
-          <span>{sorted.length} transaksi on-chain selesai</span>
+          <span>{sorted.length} transaksi selesai</span>
           <span className="flex items-center gap-1 text-emerald-700 font-bold">
-            <ShieldCheck className="w-4 h-4 text-emerald-600" /> Terverifikasi Stellar
+            <ShieldCheck className="w-4 h-4 text-emerald-600" /> Aman & Terverifikasi
           </span>
         </div>
       )}

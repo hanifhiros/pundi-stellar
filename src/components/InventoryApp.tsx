@@ -87,15 +87,15 @@ export function InventoryApp() {
         </div>
       )}
 
-      <section className="rounded-3xl bg-gradient-to-br from-amber-100 via-amber-50 to-white border border-amber-200 px-6 py-6 sm:px-8 sm:py-7 shadow-sm">
-        <p className="text-sm font-bold text-amber-800">Kirim uang untuk keluarga, sambil menabung sedikit demi sedikit.</p>
-        <h1 className="font-display text-2xl sm:text-3xl font-black text-slate-900 mt-1">Semua bisa dilakukan dengan langkah sederhana.</h1>
-        <p className="text-slate-600 mt-2 max-w-2xl">Pilih menu di bawah. Kami akan menunjukkan dengan jelas berapa uang yang diterima keluarga dan berapa yang menjadi tabungan emas.</p>
+      <section className="rounded-2xl bg-gradient-to-br from-amber-100 via-amber-50 to-white border border-amber-200 px-6 py-6 sm:px-8 sm:py-8 shadow-sm">
+        <p className="text-sm font-bold text-amber-800 uppercase tracking-widest">Kirim uang untuk keluarga, otomatis menabung emas.</p>
+        <h1 className="font-display text-2xl sm:text-3xl font-black text-slate-900 mt-2 leading-tight">Semua bisa dilakukan dengan 3 langkah sederhana.</h1>
+        <p className="text-base text-slate-600 mt-3 max-w-2xl leading-relaxed">Pilih menu di bawah. Kami akan menunjukkan dengan sangat transparan berapa uang yang diterima keluarga dan berapa yang menjadi tabungan emas fisik murni.</p>
       </section>
 
       {/* Pill Navigation Bar */}
       <div className="flex justify-center my-6">
-        <div className="nav-pill-track overflow-x-auto max-w-full">
+        <div className="nav-pill-track grid grid-cols-2 sm:flex w-full sm:w-auto gap-2 p-1.5 bg-slate-100/80 rounded-2xl sm:rounded-full">
           {TABS.map((tab) => {
             const Icon = tab.icon;
             const isActive = activeTab === tab.key;
@@ -104,10 +104,12 @@ export function InventoryApp() {
                 key={tab.key}
                 type="button"
                 onClick={() => setActiveTab(tab.key)}
-                className={`nav-pill-btn font-display ${isActive ? "active" : ""}`}
+                className={`nav-pill-btn font-display w-full justify-center sm:w-auto ${
+                  isActive ? "active bg-white shadow-sm" : "hover:bg-slate-200/50"
+                } rounded-xl sm:rounded-full`}
               >
                 <Icon className={`w-5 h-5 ${isActive ? "text-amber-600" : "text-slate-400"}`} />
-                <span>{tab.label}</span>
+                <span className="truncate">{tab.label}</span>
               </button>
             );
           })}
@@ -124,17 +126,17 @@ export function InventoryApp() {
               onSubmit={sendRemittance}
               loading={actionLoading}
             />
-            <div className="p-6 rounded-3xl bg-white border border-slate-200/60 shadow-sm space-y-3">
-              <h3 className="text-base font-bold text-slate-900 font-display flex items-center gap-2">
-                <span>💡</span> Keunggulan Pundi
+            <div className="p-6 rounded-[24px] bg-white border border-slate-200 shadow-sm space-y-3 mt-4">
+              <h3 className="text-lg font-bold text-slate-900 font-display flex items-center gap-2">
+                <Sparkles className="w-5 h-5 text-amber-500" /> Keunggulan Pundi
               </h3>
               <p className="text-base text-slate-600 leading-relaxed font-medium">
-                Kiriman Anda dibagi sesuai aturan yang dipilih. Keluarga menerima bagian mereka dalam Rupiah, sementara sisanya menjadi tabungan emas.
+                Kiriman Anda dibagi sesuai aturan yang dipilih. Keluarga menerima bagian mereka penuh dalam Rupiah, sementara sisanya otomatis menjadi emas sungguhan untuk masa depan.
               </p>
               <button
                 type="button"
                 onClick={() => setActiveTab("panduan")}
-                className="text-base font-bold text-amber-700 hover:underline inline-flex items-center gap-1 mt-2"
+                className="text-base font-bold text-amber-700 hover:text-amber-800 hover:underline inline-flex items-center gap-1 mt-1 focus-visible:ring-2 focus-visible:ring-amber-500 rounded"
               >
                 Lihat cara kerja Pundi →
               </button>
@@ -159,47 +161,47 @@ export function InventoryApp() {
           <div className="space-y-6">
             {/* Hero Stats */}
             {connected && (remittances.length > 0 || Number(totalGoldMg) > 0) && (
-              <div className="grid grid-cols-2 sm:grid-cols-3 gap-6">
-                <div className="p-6 rounded-3xl bg-white border border-slate-200/90 shadow-sm">
-                  <p className="text-sm font-bold text-slate-400 uppercase tracking-widest">
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 sm:gap-6">
+                <div className="p-5 sm:p-6 rounded-2xl sm:rounded-3xl bg-white border border-slate-200/90 shadow-sm">
+                  <p className="text-xs sm:text-sm font-bold text-slate-500 uppercase tracking-widest">
                     Total Terkirim
                   </p>
-                  <p className="text-2xl sm:text-3xl font-black text-slate-900 mt-2 font-display truncate">
+                  <p className="text-xl sm:text-3xl font-black text-slate-900 mt-2 font-display truncate">
                     {formatIDR(totalSentIDR)}
                   </p>
-                  <p className="text-sm text-slate-400 mt-1 font-medium">
+                  <p className="text-xs sm:text-sm text-slate-400 mt-1 font-medium">
                     {remittances.length}× kiriman selesai
                   </p>
                 </div>
 
-                <div className="p-6 rounded-3xl bg-gradient-to-br from-amber-50/90 to-amber-100/40 border border-amber-200/90 shadow-sm">
-                  <p className="text-sm font-bold text-amber-800 uppercase tracking-widest">
+                <div className="p-5 sm:p-6 rounded-2xl sm:rounded-3xl bg-gradient-to-br from-amber-50/90 to-amber-100/40 border border-amber-200/90 shadow-sm">
+                  <p className="text-xs sm:text-sm font-bold text-amber-800 uppercase tracking-widest">
                     Saldo Emas Fisik
                   </p>
-                  <p className="text-2xl sm:text-3xl font-black text-amber-600 mt-2 font-display truncate">
+                  <p className="text-xl sm:text-3xl font-black text-amber-600 mt-2 font-display truncate">
                     {goldGrams >= 0.001 ? `${goldGrams.toFixed(3)} gram` : formatGold(totalGoldMg)}
                   </p>
-                  <p className="text-sm text-amber-800/80 mt-1 font-bold">
+                  <p className="text-xs sm:text-sm text-amber-800/80 mt-1 font-bold">
                     ≈ {formatIDR(goldValueIDR)}
                   </p>
                 </div>
 
-                <div className="p-6 rounded-3xl bg-gradient-to-br from-emerald-50/90 to-emerald-100/40 border border-emerald-200/90 shadow-sm col-span-2 sm:col-span-1">
-                  <p className="text-sm font-bold text-emerald-800 uppercase tracking-widest">
+                <div className="p-5 sm:p-6 rounded-2xl sm:rounded-3xl bg-gradient-to-br from-emerald-50/90 to-emerald-100/40 border border-emerald-200/90 shadow-sm col-span-2 sm:col-span-1">
+                  <p className="text-xs sm:text-sm font-bold text-emerald-800 uppercase tracking-widest">
                     Aturan Tabungan
                   </p>
-                  <p className="text-xl sm:text-2xl font-black text-emerald-950 mt-2 font-display truncate">
+                  <p className="text-lg sm:text-2xl font-black text-emerald-950 mt-2 font-display truncate">
                     {savingsRule ? `${savingsRule.savings_bps / 100}% (${savingsRule.label})` : "10% Default"}
                   </p>
-                  <p className="text-sm text-emerald-700 font-bold mt-1.5 flex items-center gap-2">
-                    <ShieldCheck className="w-5 h-5 text-emerald-600" /> On-Chain Soroban
+                  <p className="text-xs sm:text-sm text-emerald-700 font-bold mt-1.5 flex items-center gap-1.5">
+                    <ShieldCheck className="w-4 h-4 text-emerald-600" /> Otomatis Aktif
                   </p>
                 </div>
               </div>
             )}
 
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
-              <div className="lg:col-span-5 space-y-8">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-10 items-start">
+              <div className="lg:col-span-5 space-y-6">
                 <GoldVaultCard
                   totalGoldMg={totalGoldMg}
                   remittanceCount={remittances.length}
