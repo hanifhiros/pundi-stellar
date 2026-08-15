@@ -256,14 +256,14 @@ button:focus-visible, a:focus-visible, input:focus-visible {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 8px;
-  padding: 16px 12px;
-  border-radius: 16px;
-  border: 2px solid var(--border-light);
+  gap: 6px;
+  padding: 12px 6px;
+  border-radius: 14px;
+  border: 1.5px solid var(--border-light);
   background: #FFFFFF;
   cursor: pointer;
   transition: all 0.2s ease;
-  min-height: 48px;
+  min-height: 76px;
 }
 
 .country-chip:hover:not(.active) {
@@ -274,7 +274,7 @@ button:focus-visible, a:focus-visible, input:focus-visible {
 .country-chip.active {
   border-color: var(--gold-500);
   background: var(--gold-50);
-  box-shadow: 0 4px 12px rgba(214, 158, 46, 0.15);
+  box-shadow: 0 0 0 2px var(--gold-300);
 }
 
 /* ── Input Box ── */
@@ -356,6 +356,5 @@ button:focus-visible, a:focus-visible, input:focus-visible {
 
   .nav-pill-btn { justify-content: flex-start; min-width: 0; padding: 12px; font-size: 14px; }
   .nav-pill-btn span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-  .btn-gold-action { height: 58px; border-radius: 16px; font-size: 16px; }
-  .country-chip { min-height: 104px; padding: 12px 8px; }
+  .btn-gold-action { height: 52px; border-radius: 14px; font-size: 16px; }
 }

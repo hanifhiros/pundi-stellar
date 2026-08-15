@@ -120,26 +120,35 @@ export function InventoryApp() {
       <div className="pt-2">
         {/* TAB 1: KIRIM UANG */}
         {activeTab === "kirim" && (
-          <div className="max-w-2xl mx-auto space-y-6">
-            <SendRemittanceForm
-              savingsRule={savingsRule}
-              onSubmit={sendRemittance}
-              loading={actionLoading}
-            />
-            <div className="p-6 rounded-[24px] bg-white border border-slate-200 shadow-sm space-y-3 mt-4">
-              <h3 className="text-lg font-bold text-slate-900 font-display flex items-center gap-2">
-                <Sparkles className="w-5 h-5 text-amber-500" /> Keunggulan Pundi
-              </h3>
-              <p className="text-base text-slate-600 leading-relaxed font-medium">
-                Kiriman Anda dibagi sesuai aturan yang dipilih. Keluarga menerima bagian mereka penuh dalam Rupiah, sementara sisanya otomatis menjadi emas sungguhan untuk masa depan.
-              </p>
-              <button
-                type="button"
-                onClick={() => setActiveTab("panduan")}
-                className="text-base font-bold text-amber-700 hover:text-amber-800 hover:underline inline-flex items-center gap-1 mt-1 focus-visible:ring-2 focus-visible:ring-amber-500 rounded"
-              >
-                Lihat cara kerja Pundi →
-              </button>
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-start">
+            <div className="lg:col-span-7">
+              <SendRemittanceForm
+                savingsRule={savingsRule}
+                onSubmit={sendRemittance}
+                loading={actionLoading}
+              />
+            </div>
+            <div className="lg:col-span-5 space-y-6">
+              <GoldVaultCard
+                totalGoldMg={totalGoldMg}
+                remittanceCount={remittances.length}
+                goalLabel={savingsRule?.label}
+              />
+              <div className="p-6 rounded-2xl bg-white border border-slate-200 shadow-xs space-y-3">
+                <h3 className="text-base font-bold text-slate-900 font-display flex items-center gap-2">
+                  <Sparkles className="w-5 h-5 text-amber-500" /> Mengapa Pundi?
+                </h3>
+                <p className="text-sm text-slate-600 leading-relaxed font-medium">
+                  Biaya kiriman konvensional memotong hingga 5-6%. Di Pundi, biaya hanya ~1%, dan selisihnya langsung menjadi tabungan emas fisik murni (LBMA 99.99%) untuk masa depan Anda dan keluarga.
+                </p>
+                <button
+                  type="button"
+                  onClick={() => setActiveTab("panduan")}
+                  className="text-xs font-bold text-amber-700 hover:underline inline-flex items-center gap-1 mt-1 cursor-pointer"
+                >
+                  Pelajari cara kerja & FAQ →
+                </button>
+              </div>
             </div>
           </div>
         )}
