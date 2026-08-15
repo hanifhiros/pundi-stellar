@@ -49,14 +49,14 @@ type SignTransaction = NonNullable<
 export function createContractClient(
   publicKey?: string,
   signTransaction?: SignTransaction,
-): Client {
+): any {
   return new Client({
     contractId: CONTRACT_ID,
     networkPassphrase: NETWORK_PASSPHRASE,
     rpcUrl: RPC_URL,
     ...(publicKey ? { publicKey } : {}),
     ...(signTransaction ? { signTransaction } : {}),
-  });
+  }) as any;
 }
 
 // ----------------------------------------------------------
